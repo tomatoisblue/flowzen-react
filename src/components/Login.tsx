@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { loginFields } from "../constants/formField";
 import Input from "./Input";
 import FormAction from "./FormAction";
 import apiConfig from "../constants/apiConfig";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/authSlice";
 
 
 type Fields ={ [key: string]: string }
@@ -16,14 +18,16 @@ fields.forEach(field => fieldsState[field.id]="");
 
 const Login: React.FC = () => {
   const [loginState, setLoginState] = useState<Fields>(fieldsState);
-  const [token, setToken] = useState<string>("");
+  // const [token, setToken] = useState<string>("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const LOGIN_URL = `${apiConfig.baseUrl}/login`;
 
-  useEffect(() => {
-    localStorage.setItem("token", token)
-  }, [token])
+  // useEffect(() => {
+  //   console.log("token: " + token);
+  //   localStorage.setItem("token", token)
+  // }, [token])
 
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,24 +35,34 @@ const Login: React.FC = () => {
   }
 
   const handleSubmit = (e: React.SyntheticEvent) => {
-    console.log("handle submit");
     e.preventDefault();
     authenticateUser();
   }
 
-
   const authenticateUser = async() => {
-    console.log("attempt authentication")
     axios.post(LOGIN_URL, {
       email: loginState["email-address"],
       password: loginState["password"],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      }
     }).then((res) => {
-      console.log(res);
-      setToken(res.headers['x-auth-token']);
-      navigate("/dashboard");
+      localStorage.setItem("token", res.headers["x-auth-token"]);
+      handleLogin();
     }).catch((err) => {
       console.log(err);
     });
+  }
+
+  const handleLogin = () => {
+    // Set JWT token returned from api server in local storage.
+    // setToken(response.headers['x-auth-token']);
+    // Change state `isLoggedIn` into true
+    dispatch(login());
+    // Redirect `/dashboard`
+    navigate("/dashboard");
   }
 
   return (
