@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signupFields } from "../constants/formField";
+import { signupFields } from "../constants/userFormField";
 import Input from "./Input";
 import FormAction from "./FormAction";
 import axios from "axios";
@@ -18,6 +18,7 @@ const Signup: React.FC = () => {
   const navigate = useNavigate();
 
   const SIGNUP_URL = `${apiConfig.baseUrl}/signup`;
+  // const SIGNUP_URL = `${apiConfig.devBaseUrl}/signup`;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSignupState({...signupState, [e.target.id]:e.target.value})

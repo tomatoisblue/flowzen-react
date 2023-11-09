@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { loginFields } from "../constants/formField";
+import { loginFields } from "../constants/userFormField";
 import Input from "./Input";
 import FormAction from "./FormAction";
 import apiConfig from "../constants/apiConfig";
@@ -23,12 +23,6 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const LOGIN_URL = `${apiConfig.baseUrl}/login`;
-
-  // useEffect(() => {
-  //   console.log("token: " + token);
-  //   localStorage.setItem("token", token)
-  // }, [token])
-
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setLoginState({...loginState, [e.target.id]:e.target.value})
