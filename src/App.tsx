@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import DashboardPage from './pages/DashboardPage'
+import DashboardPage from "./pages/Dashboard"
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import { useDispatch, useSelector } from 'react-redux'

@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
 import Login from "../components/Login";
 import AuthenticationHeader from "./AuthenticationHeader";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 
 const LoginPage: React.FC = () => {
@@ -24,9 +23,6 @@ const LoginPage: React.FC = () => {
       {auth.isLoggedIn === true ? (
         <Navigate to="/dashboard" replace={true} />
       ): <></>}
-      <div>
-        <h3>Login State: {auth.isLoggedIn ? "TRUE" : "FALSE"}</h3>
-      </div>
       <AuthenticationHeader
         heading="ログイン"
         paragraph="アカウントをお持ちでない場合、こちらから登録してください。"
@@ -36,6 +32,7 @@ const LoginPage: React.FC = () => {
       <Login />
     </div>
   )
+
 
 }
 

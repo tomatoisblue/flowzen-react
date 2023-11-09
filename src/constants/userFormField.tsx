@@ -1,4 +1,4 @@
-interface fields {
+interface UserFields {
     labelText: string
     labelFor: string
     id: string
@@ -8,7 +8,7 @@ interface fields {
     isRequired: boolean
     placeholder: string
 }
-const loginFields: fields[]=[
+const loginFields: UserFields[]=[
     {
         labelText:"メールアドレス",
         labelFor:"email-address",
@@ -31,7 +31,7 @@ const loginFields: fields[]=[
     }
 ]
 
-const signupFields: fields[] =[
+const signupFields: UserFields[] =[
     {
         labelText:"ユーザーネーム",
         labelFor:"username",
