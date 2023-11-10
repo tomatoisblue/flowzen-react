@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import GeneralSidebar from "../components/GeneralSidebar";
 import { useEffect } from "react";
 import TaskLists from "../components/TaskLists";
-import { addAllTasks } from "../features/taskSlice";
+import { addAllTasks, removeAllTasks } from "../features/taskSlice";
 import Task from "../types/Task";
 import getAllTasksByBoardID from "../components/getAllTasksByBoardID";
 
@@ -13,7 +13,10 @@ const Dashboard: React.FC = () => {
   const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
 
   useEffect(() => {
-      fetchTasksByBoardID();
+    if (currentBoardID === -1) {
+      dispatch(removeAllTasks())
+    }
+    fetchTasksByBoardID();
   }, [currentBoardID])
 
   const fetchTasksByBoardID = async () => {

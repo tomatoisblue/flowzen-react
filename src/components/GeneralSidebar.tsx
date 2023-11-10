@@ -26,14 +26,11 @@ import getAllBoards from "./getAllBoards";
 import BoardCreationForm from "./BoardCreationForm";
 import { addAllBoards, deleteAllBoards, setCurrentBoardID } from "../features/boardSlice";
 import deleteBoard from "./deleteBoard";
-import { setCurrentTaskID } from "../features/taskSlice";
-// import sortBoards from "./sortBoards";
 
 
 const GeneralSidebar: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<number>(1);
   const [boardFormOpen, setBoardFormOpen] = useState(false);
-  // const [boards, setBoards] = useState<Board[]>([]);
   const boards: Board[] = useSelector((state: any) => state.board.boards);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,6 +69,7 @@ const GeneralSidebar: React.FC = () => {
 
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] shadow-xl shadow-blue-gray-900/5">
+      <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/>
       <List>
         <Accordion
           open={sidebarOpen === 1}
@@ -117,7 +115,6 @@ const GeneralSidebar: React.FC = () => {
                             />
                           </svg>
                         </IconButton>
-
                       </ListItemSuffix>
                     </ListItem>
                   </>
@@ -131,7 +128,7 @@ const GeneralSidebar: React.FC = () => {
             <DocumentPlusIcon className="h-5 w-5" />
           </ListItemPrefix>
             新規ボード作成
-            <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/>
+            {/* <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/> */}
         </ListItem>
         <ListItem onClick={handleLogout}>
           <ListItemPrefix>

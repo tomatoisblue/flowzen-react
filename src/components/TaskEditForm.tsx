@@ -112,14 +112,14 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
       >
         <Card className="mx-auto w-full max-w-[40rem]">
           <CardBody className="flex flex-col gap-1">
-            <div className="flex h-10">
-              <Typography variant="h4" color="blue-gray">
+            <div className="flex h-10 w-full">
+              <Typography variant="h4" color="blue-gray" className="w-1/2">
                 タスク編集
               </Typography>
-              <div className="place-items-end">
+              <div className="w-3/4">
                 <Button  onClick={() => handleDeleteTask(currentTaskID)}
-                        className="text-sm font-small text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                  <Typography  color="blue-gray">
+                        className="float-right text-sm font-small text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                  <Typography  color="blue-gray" >
                     削除
                   </Typography>
                 </Button>
@@ -146,7 +146,7 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
                 )}
                 {fields[index].id === "status" && (
                   <div>
-                    <Select id={field.id} name={field.name} onChange={handleStatusChange}>
+                    <Select id={field.id} name={field.name} onChange={handleStatusChange} value={currentTask?.status}>
                       <Option value="TODO">やるべきこと</Option>
                       <Option value="IN_PROGRESS">進行中</Option>
                       <Option value="DONE">完了</Option>

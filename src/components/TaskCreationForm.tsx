@@ -115,8 +115,8 @@ const TaskCreationForm: React.FC<Props> = ({ open, handleOpen, taskStatus}) => {
                 )}
                 {fields[index].id === "status" && (
                   <div>
-                    <Select id={field.id} name={field.name} onChange={handleStatusChange} >
-                      <Option value="TODO">やるべきこと</Option>
+                    <Select id={field.id} name={field.name} onChange={handleStatusChange} value={taskStatus} >
+                      <Option value="TODO" >やるべきこと</Option>
                       <Option value="IN_PROGRESS">進行中</Option>
                       <Option value="DONE">完了</Option>
                     </Select>

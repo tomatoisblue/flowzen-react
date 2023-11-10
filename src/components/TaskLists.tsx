@@ -1,18 +1,32 @@
 import { useSelector } from "react-redux";
 import Task from "../types/Task";
 import TaskStack from "./TaskStack";
+import { Typography } from "@material-tailwind/react";
 
 const TaskLists = () => {
   const allTasks: Task[] = useSelector((state: any) => state.task.tasks);
   const todoTasks: Task[] | undefined = allTasks.filter((task) => task.status === "TODO");
   const inProgressTasks: Task[] | undefined = allTasks.filter((task) => task.status === "IN_PROGRESS");
   const doneTasks: Task[] | undefined = allTasks.filter((task) => task.status === "DONE");
+  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
 
   return (
     <div className="flex w-full">
-      <TaskStack taskStatus={"TODO"} tasks={todoTasks} />
-      <TaskStack taskStatus={"IN_PROGRESS"} tasks={inProgressTasks} />
-      <TaskStack taskStatus={"DONE"} tasks={doneTasks} />
+      {currentBoardID !== -1 ? (
+        <>
+          <TaskStack taskStatus={"TODO"} tasks={todoTasks} />
+          <TaskStack taskStatus={"IN_PROGRESS"} tasks={inProgressTasks} />
+          <TaskStack taskStatus={"DONE"} tasks={doneTasks} />
+        </>
+      ) : (
+        <div className="h-screen w-screen">
+          <div className="w-full h-full m-20">
+            <Typography variant="h5">
+              ボードを選択してください
+            </Typography>
+          </div>
+        </div>
+      )}
     </div>
   )
 
