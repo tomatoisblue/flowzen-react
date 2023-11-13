@@ -5,14 +5,15 @@ import Input from "@material-tailwind/react/components/Input";
 import Typography from "@material-tailwind/react/components/Typography";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { taskCreationFields } from "../constants/taskFormField";
+import { taskFormFields } from "../constants/taskFormField";
 import Task from "../types/Task";
 import stringToTaskStatus from "./stringToTaskStatus";
 import Select, { Option } from "@material-tailwind/react/components/Select";
-import getAllTasksByBoardID from "./getAllTasksByBoardID";
-import { addAllTasks } from "../features/taskSlice";
 import updateTask from "./updateTask";
 import deleteTask from "./deleteTask";
+import { addAllTasks } from "../features/taskSlice";
+import getAllTasksByBoardID from "./getAllTasksByBoardID";
+
 
 interface Props {
   open: boolean
@@ -21,28 +22,49 @@ interface Props {
 
 type Fields = { [key: string]: string | Date | null}
 
-const fields = taskCreationFields;
+
+const fields = taskFormFields;
 let fieldsState: Fields = {};
 fields.forEach(field => fieldsState[field.id]="");
 
-const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
-  const allTasks = useSelector((state: any) => state.task.tasks);
-  const currentTaskID: number = useSelector((state: any) => state.task.currentTaskID);
-  const currentTask = allTasks.find((task: Task) => task.taskId === currentTaskID)!;
 
-  console.log("currentTask")
-  console.log(JSON.stringify(currentTask))
-  console.log(JSON.stringify(currentTask?.title))
+const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
+  const currentTaskID: number = useSelector((state: any) => state.task.currentTaskID);
+  const currentTask: Task = useSelector((state: any) => state.task.currentTask);
 
   const [taskState, setTaskState] = useState<Fields>(fieldsState);
+  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+
+  const dispatch = useDispatch();
+
+  // const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  // const [taskValidation, setTaskValidation] = useState<TaskValidation>(taskValidationTemplate);
+
+  // useEffect(() => {
+  //   Object.keys(taskValidation).forEach((key: string) => {
+  //     taskValidation[key] = validateTaskForm(key, currentTask[key])
+  //   })
+  // }, [task])
+
+
+  // useEffect(() => {
+  //   console.log("####task validation has changed")
+  //   console.log("task validation : " + JSON.stringify(taskValidation))
+  //   const areAllFieldsValid: boolean = Object.values(taskValidation).every((value) => value);
+  //   setIsFormValid(areAllFieldsValid);
+  //   console.log("isFormValid: " + isFormValid)
+  // }, [taskValidation])
+
+
+
 
   useEffect(() => {
     setTaskState({
       "title": currentTask?.title,
       "status": currentTask?.status,
-      "description": currentTask?.description,
-      "expiration-date": currentTask?.expirationDate,
-      "url": currentTask?.url
+      "description": currentTask?.description!,
+      "expiration-date": currentTask?.expirationDate!,
+      "url": currentTask?.url!
     })
   }, [currentTaskID])
 
@@ -52,21 +74,20 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
 
   }, [taskState])
 
-
-
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
-  const dispatch = useDispatch();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskState({...taskState, [e.target.id]: e.target.value});
-    console.log(e.target.value)
-    console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
+    // const validationResult = validateTaskForm(e.target.id, e.target.value);
+    // setTaskValidation({...taskValidation, [e.target.id]: validationResult});
+    // console.log(e.target.value)
+    // console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
   }
 
   const handleStatusChange = (e) => {
     setTaskState({...taskState, ["status"]: e})
-    console.log(e)
-    console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
+    // const validationResult = validateTaskForm("status", e);
+    // setTaskValidation({...taskValidation, ["status"]: validationResult});
+    // console.log(e)
+    // console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
   }
 
   const handleSubmit = async () => {
@@ -79,7 +100,7 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
     }
     const res: boolean = await updateTask(task, currentBoardID, currentTaskID);
     if (res) {
-      fetchTasksByBoardID();
+      fetchTasksByBoardID()
       handleOpen();
     }
   }
@@ -96,7 +117,7 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
   const handleDeleteTask = async (taskID: number) => {
     const result: boolean = await deleteTask(taskID, currentBoardID);
     if(result) {
-      fetchTasksByBoardID();
+      await fetchTasksByBoardID();
       handleOpen();
     }
   }
@@ -147,7 +168,7 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
                 {fields[index].id === "status" && (
                   <div>
                     <Select id={field.id} name={field.name} onChange={handleStatusChange} value={currentTask?.status}>
-                      <Option value="TODO">やるべきこと</Option>
+                      <Option value="TODO">未着手</Option>
                       <Option value="IN_PROGRESS">進行中</Option>
                       <Option value="DONE">完了</Option>
                     </Select>
@@ -157,7 +178,7 @@ const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
             )}
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={handleSubmit} fullWidth>
+            <Button variant="gradient" onClick={handleSubmit} fullWidth >
               編集
             </Button>
           </CardFooter>

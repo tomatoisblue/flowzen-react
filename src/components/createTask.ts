@@ -28,14 +28,14 @@ const createTask = async (task: Task, boardID: number): Promise<boolean> => {
       }
     });
     console.log("res...");
-    console.log(res.data);
+    console.log(JSON.stringify(res.data));
 
     if (res.headers["x-auth-token"] != null) {
       localStorage.setItem("token", res.headers["x-auth-token"]);
     }
     return true;
   } catch (err) {
-    console.log(err);
+    console.log(JSON.stringify(err));
     return false;
   }
 }

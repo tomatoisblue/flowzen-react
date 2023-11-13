@@ -6,7 +6,7 @@ import Typography from "@material-tailwind/react/components/Typography";
 import { useEffect, useState } from "react";
 import { TaskStatus } from "../types/TaskStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { taskCreationFields } from "../constants/taskFormField";
+import { taskFormFields } from "../constants/taskFormField";
 import createTask from "./createTask";
 import Task from "../types/Task";
 import stringToTaskStatus from "./stringToTaskStatus";
@@ -22,12 +22,11 @@ interface Props {
 
 type Fields = { [key: string]: string }
 
+const fields = taskFormFields;
+let fieldsState: Fields = {};
+fields.forEach(field => fieldsState[field.id]="");
 
 const TaskCreationForm: React.FC<Props> = ({ open, handleOpen, taskStatus}) => {
-  const fields = taskCreationFields;
-  let fieldsState: Fields = {};
-  fields.forEach(field => fieldsState[field.id]="");
-
   const [taskState, setTaskState] = useState<Fields>(fieldsState);
   const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
   const dispatch = useDispatch();
@@ -36,25 +35,16 @@ const TaskCreationForm: React.FC<Props> = ({ open, handleOpen, taskStatus}) => {
     setTaskState({...taskState, ["status"]: taskStatus})
   }, [])
 
-
-  useEffect(() => {
-    if (!open) {
-    }
-
-    return () => {
-    }
-  }, [open])
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskState({...taskState, [e.target.id]: e.target.value});
-    console.log(e.target.value)
-    console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
+    // console.log(e.target.value)
+    // console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
   }
 
   const handleStatusChange = (e) => {
     setTaskState({...taskState, ["status"]: e})
-    console.log(e)
-    console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
+    // console.log(e)
+    // console.log("title: " + taskState["title"] + "\nstatus: " + taskState["status"] + "\ndesc: " + taskState["description"] + "\nexp: " + taskState["expiration-date"] + "\nurl: " + taskState["url"])
   }
 
   const handleSubmit = async () => {
@@ -68,6 +58,7 @@ const TaskCreationForm: React.FC<Props> = ({ open, handleOpen, taskStatus}) => {
     const res: boolean = await createTask(task, currentBoardID);
     if (res) {
       fetchTasksByBoardID();
+      setTaskState({...fieldsState, ["status"]: taskStatus});
       handleOpen();
     }
   }
@@ -116,7 +107,7 @@ const TaskCreationForm: React.FC<Props> = ({ open, handleOpen, taskStatus}) => {
                 {fields[index].id === "status" && (
                   <div>
                     <Select id={field.id} name={field.name} onChange={handleStatusChange} value={taskStatus} >
-                      <Option value="TODO" >やるべきこと</Option>
+                      <Option value="TODO" >未着手</Option>
                       <Option value="IN_PROGRESS">進行中</Option>
                       <Option value="DONE">完了</Option>
                     </Select>

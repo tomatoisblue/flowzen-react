@@ -6,6 +6,7 @@ import TaskLists from "../components/TaskLists";
 import { addAllTasks, removeAllTasks } from "../features/taskSlice";
 import Task from "../types/Task";
 import getAllTasksByBoardID from "../components/getAllTasksByBoardID";
+import TaskListsV2 from "../components/TaskListsV2";
 
 const Dashboard: React.FC = () => {
   const auth = useSelector((state: any) => state.auth);
@@ -36,7 +37,8 @@ const Dashboard: React.FC = () => {
       ): (
         <div className="flex">
           <GeneralSidebar />
-          <TaskLists />
+          {/* <TaskLists /> */}
+          <TaskListsV2 />
         </div>
       )}
       </div>

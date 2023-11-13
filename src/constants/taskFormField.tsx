@@ -7,7 +7,7 @@ interface TaskFields {
     isRequired: boolean
     placeholder?: string
 }
-const taskCreationFields: TaskFields[]=[
+const taskFormFields: TaskFields[]=[
     {
         labelText:"タイトル",
         labelFor:"title",
@@ -51,4 +51,4 @@ const taskCreationFields: TaskFields[]=[
     },
 ]
 
-export {taskCreationFields}
+export {taskFormFields}

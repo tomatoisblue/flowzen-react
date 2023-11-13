@@ -40,10 +40,12 @@ const TaskStack = ({taskStatus, tasks}: TaskStackProps) => {
       <TaskEditForm open={taskEditFormOpen} handleOpen={handleTaskEditFormOpen} />
       <TaskStackHeader taskStatus={taskStatus} handleTaskCreation={handleTaskCreateFormOpen}/>
       <List>
-        {tasks && tasks.map((task) =>
+        {tasks && tasks.map((task, index) =>
           <ListItem
             key={task.taskId}
-            onClick={() => handleTaskClick(task.taskId!)}>
+            onClick={() => handleTaskClick(task.taskId!)}
+            className={index %2 === 0 ? 'bg-white' : 'bg-pink-50'}
+            >
               {task.title}
           </ListItem>)
         }

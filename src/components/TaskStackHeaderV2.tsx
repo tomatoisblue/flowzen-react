@@ -3,10 +3,11 @@ import { TaskStatus } from "../types/TaskStatus";
 
 interface TaskStackHeaderProps {
   taskStatus: TaskStatus
-  handleTaskCreation: () => void
+  handleOpen: () => void
 }
 
-const TaskStackHeader = ({ taskStatus, handleTaskCreation }: TaskStackHeaderProps) => {
+const TaskStackHeaderV2: React.FC<TaskStackHeaderProps> = ({ taskStatus, handleOpen }: TaskStackHeaderProps ) => {
+
   let title = "";
 
   switch (taskStatus) {
@@ -29,7 +30,7 @@ const TaskStackHeader = ({ taskStatus, handleTaskCreation }: TaskStackHeaderProp
         <Typography variant="h5" className="my-2 font-normal">{title}</Typography>
       </div>
       <div>
-        <Button variant="text" size="sm" onClick={handleTaskCreation}>
+        <Button variant="text" size="sm" onClick={handleOpen}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
           </svg>
@@ -39,4 +40,4 @@ const TaskStackHeader = ({ taskStatus, handleTaskCreation }: TaskStackHeaderProp
   )
 }
 
-export default TaskStackHeader;
+export default TaskStackHeaderV2;
