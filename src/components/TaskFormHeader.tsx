@@ -18,19 +18,19 @@ const TaskFormHeader = ({ mode, handleOpen }: TaskFormHeaderProps) => {
           新規タスク
         </Typography>
       ) : (
-        <>
-          <Typography variant="h4" color="blue-gray" className="w-1/2">
+        <div className="flex items-center w-full">
+          <Typography variant="h4" color="blue-gray" className="flex-shrink-0 w-1/2">
             タスク編集
           </Typography>
-          <div className="w-3/4">
+          <div className="w-1/2">
             <Button onClick={() => handleDeleteTask(handleOpen)}
-                    className="float-right text-sm font-small text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-              <Typography  color="blue-gray" >
+                    className="float-right text-sm font-small text-black focus:outline-none bg-red-300 rounded-lg border border-gray-200 hover:bg-red-600  focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              <Typography className="font-bold" color="blue-gray" >
                 削除
               </Typography>
             </Button>
           </div>
-        </>
+        </div>
       )}
     </>
   )

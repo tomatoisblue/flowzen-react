@@ -10,6 +10,8 @@ import TaskFormHeader from "./TaskFormHeader";
 import { TaskStatus } from "../types/TaskStatus";
 import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
+import { TaskValidationError } from "../features/taskSlice";
+import { useEffect } from "react";
 
 interface TaskFormProps {
   taskStatus?: TaskStatus,
@@ -21,6 +23,8 @@ interface TaskFormProps {
 const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}: TaskFormProps) => {
   const [{ handleChange, handleStatusChange, handleSubmit }] = useTaskForm();
   const currentTask: Task = useAppSelector((state) => state.task.currentTask);
+  const taskFormValidationErrors: TaskValidationError = useAppSelector((state) => state.task.taskFormValidationErrors);
+
   console.log("TaskForm")
 
   return (
@@ -38,11 +42,20 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
             </div>
             {taskFormFields.map((field) =>
               <>
-                <Typography
-                  className="my-1 font-normal"
-                  color="gray">
-                  {field.labelText}
-                </Typography>
+                <div className="flex">
+                  <Typography
+                    className="my-1 font-normal"
+                    color="gray">
+                    {field.labelText}
+                  </Typography>
+                  {taskFormValidationErrors && taskFormValidationErrors[field.name as keyof TaskValidationError] && (
+                    <Typography
+                      className="mx-2 my-1 font-normal"
+                      color="red">
+                      ※{taskFormValidationErrors[field.name as keyof TaskValidationError]}
+                    </Typography>
+                  )}
+                </div>
                 {field.id !== "status" &&(
                   <Input
                     onChange={handleChange}

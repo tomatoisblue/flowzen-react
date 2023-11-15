@@ -6,22 +6,49 @@ import getAllTasksByBoardID from "../components/getAllTasksByBoardID";
 
 export type TaskFormMode = "create" | "edit";
 
+export interface TaskFormValidation {
+  title: boolean
+  status: boolean
+  description: boolean
+  expirationDate: boolean
+  url: boolean
+}
+
 interface TaskSliceState {
   tasks: Task[]
   currentTaskID: number
   currentTask: Task | null
-  isTaskCreateFormOpen: boolean
-  isTaskEditFormOpen: boolean
-  taskFormMode: TaskFormMode
+  taskFormValidations: TaskFormValidation
+  taskFormValidationErrors: TaskValidationError
+}
+
+export interface TaskValidationError {
+  title?: string
+  status?: string
+  description?: string
+  expirationDate?: string
+  url?: string
+}
+
+
+// initial values
+export const initialTaskFormValidations: TaskFormValidation = {
+  title: false,
+  status: false,
+  description: false,
+  expirationDate: false,
+  url: false
+}
+
+export const initialTaskFormValidationErrors: TaskValidationError = {
 }
 
 const initialState: TaskSliceState = {
   tasks: [],
   currentTaskID: -1,
   currentTask: null,
-  isTaskCreateFormOpen: false,
-  isTaskEditFormOpen: false,
-  taskFormMode: "create",
+  taskFormValidations: initialTaskFormValidations,
+  taskFormValidationErrors: initialTaskFormValidationErrors
 };
 
 export const taskSlice = createSlice({
@@ -47,36 +74,22 @@ export const taskSlice = createSlice({
     clearCurrentTask: (state) => {
       state.currentTaskID = -1;
       state.currentTask = null;
-
-      console.log("##########clearCurrentTask...")
-      console.log("currentTask...")
-      console.log(JSON.stringify(state.currentTask))
     },
-    toggleTaskCreateFormOpen: (state) => {
-      if (state.isTaskCreateFormOpen) {
-        console.log("TaskCreateForm will close");
-      } else {
-        console.log("TaskCreateForm will open");
-      }
-      state.isTaskEditFormOpen = false;
-      state.isTaskCreateFormOpen = !state.isTaskCreateFormOpen;
+    setTaskFormValidations: (state, action: PayloadAction<TaskFormValidation>) => {
+      state.taskFormValidations = action.payload;
     },
-    toggleTaskEditFormOpen: (state) => {
-      if (state.isTaskEditFormOpen) {
-        console.log("TaskEditForm will close");
-      } else {
-        console.log("TaskEditForm will open");
-      }
-      state.isTaskCreateFormOpen = false;
-      state.isTaskEditFormOpen = !state.isTaskEditFormOpen;
+    setTaskFormValidationErrors: (state, action: PayloadAction<TaskValidationError>) => {
+      state.taskFormValidationErrors = action.payload;
+      console.log("taskFormValidationErrors changed to")
+      console.log(JSON.stringify(state.taskFormValidationErrors))
     },
-    changeToCreateMode: (state) => {
-      console.log("FormMode => create")
-      state.taskFormMode = "create";
+    unsetTaskFormValidationErrors: (state, action: PayloadAction<keyof TaskValidationError>) => {
+      delete state.taskFormValidationErrors[action.payload];
+      console.log("taskFormValidationErrors changed to")
+      console.log(JSON.stringify(state.taskFormValidationErrors))
     },
-    changeToEditMode: (state) => {
-      console.log("FormMode => edit")
-      state.taskFormMode = "edit";
+    clearTaskFormValidationErrors: (state) => {
+      state.taskFormValidationErrors = initialTaskFormValidationErrors;
     }
   },
   extraReducers: (builder) => {
@@ -91,10 +104,10 @@ export const {  addAllTasks,
                 setCurrentTaskID,
                 setCurrentTask,
                 clearCurrentTask,
-                toggleTaskCreateFormOpen,
-                toggleTaskEditFormOpen,
-                changeToCreateMode,
-                changeToEditMode, } = taskSlice.actions;
+                setTaskFormValidations,
+                setTaskFormValidationErrors,
+                unsetTaskFormValidationErrors,
+                clearTaskFormValidationErrors } = taskSlice.actions;
 
 export default taskSlice.reducer;
 
