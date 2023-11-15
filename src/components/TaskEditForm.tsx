@@ -4,7 +4,6 @@ import Dialog from "@material-tailwind/react/components/Dialog";
 import Input from "@material-tailwind/react/components/Input";
 import Typography from "@material-tailwind/react/components/Typography";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { taskFormFields } from "../constants/taskFormField";
 import Task from "../types/Task";
 import stringToTaskStatus from "./stringToTaskStatus";
@@ -13,6 +12,7 @@ import updateTask from "./updateTask";
 import deleteTask from "./deleteTask";
 import { addAllTasks } from "../features/taskSlice";
 import getAllTasksByBoardID from "./getAllTasksByBoardID";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 
 interface Props {
@@ -29,13 +29,13 @@ fields.forEach(field => fieldsState[field.id]="");
 
 
 const TaskEditForm: React.FC<Props> = ({ open, handleOpen }) => {
-  const currentTaskID: number = useSelector((state: any) => state.task.currentTaskID);
-  const currentTask: Task = useSelector((state: any) => state.task.currentTask);
+  const currentTaskID: number = useAppSelector((state) => state.task.currentTaskID);
+  const currentTask: Task = useAppSelector((state) => state.task.currentTask);
 
   const [taskState, setTaskState] = useState<Fields>(fieldsState);
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+  const currentBoardID = useAppSelector((state) => state.board.currentBoardID);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // const [isFormValid, setIsFormValid] = useState<boolean>(false);
   // const [taskValidation, setTaskValidation] = useState<TaskValidation>(taskValidationTemplate);

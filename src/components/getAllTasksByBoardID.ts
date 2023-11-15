@@ -1,10 +1,8 @@
 import axios from "axios";
 import apiConfig from "../constants/apiConfig";
 import Task from "../types/Task";
-import { TaskStatus } from "../types/TaskStatus";
-import { GroupedTasks } from "../features/taskSlice";
 
-const getAllTasksByBoardID = async (boardId: number): Promise<GroupedTasks> => {
+const getAllTasksByBoardID = async (boardId: number): Promise<Task[]> => {
   const URL: string = `${apiConfig.baseUrl}/boards/${boardId}`;
   console.log("REQUESTING >>> " + URL);
 
@@ -12,7 +10,7 @@ const getAllTasksByBoardID = async (boardId: number): Promise<GroupedTasks> => {
   console.log("token: " + token);
 
   if (token === null) {
-    return new Map<TaskStatus, Task[]>;
+    return [];
   }
 
   try {
@@ -27,7 +25,7 @@ const getAllTasksByBoardID = async (boardId: number): Promise<GroupedTasks> => {
     return res.data;
   } catch (err) {
     console.log(err);
-    return new Map<TaskStatus, Task[]>;
+    return [];
   }
 }
 

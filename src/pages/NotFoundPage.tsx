@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../hooks";
 
 const NotFoundPage: React.FC = () => {
-  const auth = useSelector((state: any) => state.auth);
+  const auth = useAppSelector((state: any) => state.auth);
   return (
     <>
       {auth.isLoggedIn === true ? (

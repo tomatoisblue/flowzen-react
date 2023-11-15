@@ -1,14 +1,38 @@
-import { useSelector } from "react-redux";
 import Task from "../types/Task";
 import { Typography } from "@material-tailwind/react";
 import TaskStackV2 from "./TaskStackV2";
+import { useEffect } from "react";
+import { fetchAllTasksByBoardID, removeAllTasks } from "../features/taskSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 const TaskLists = () => {
-  const allTasks: Task[] = useSelector((state: any) => state.task.tasks);
+  const allTasks: Task[] = useAppSelector((state) => state.task.tasks);
+  console.log("all tasks ...")
+  console.log(JSON.stringify(allTasks));
   const todoTasks: Task[] | undefined = allTasks.filter((task) => task.status === "TODO");
   const inProgressTasks: Task[] | undefined = allTasks.filter((task) => task.status === "IN_PROGRESS");
   const doneTasks: Task[] | undefined = allTasks.filter((task) => task.status === "DONE");
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+  const currentBoardID = useAppSelector((state) => state.board.currentBoardID);
+  const dispatch = useAppDispatch();
+
+  console.log("TaskListsV2")
+
+  useEffect(() => {
+    if (currentBoardID < 0) {
+      return;
+    }
+    const onRefreshTasks = async() => {
+      dispatch(fetchAllTasksByBoardID(currentBoardID));
+    }
+
+    onRefreshTasks();
+
+    return () => {
+      dispatch(removeAllTasks());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentBoardID])
+
 
 
   return (

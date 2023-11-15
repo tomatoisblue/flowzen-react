@@ -1,0 +1,58 @@
+env:
+  browser: true
+  es2021: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: latest
+  project:  ./tsconfig.json
+extends:
+  # - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:react-hooks-recommended
+  - plugin:react/recommended
+  - airbnb
+  - airbnb-typescript
+  - prettier
+overrides:
+  - files:
+      - '**/__test__/**/*.+(ts|tsx|js)',
+      - '**/?(*.)+(spec|test).+(ts|tsx|js)'
+    extends:
+      - plugin:jest/recommended
+      - plugin:jest-dom/recommended
+      - plugin:testing-library/react
+
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+plugins:
+  - '@typescript-eslint'
+  - react
+  - react-hooks
+  - jest
+  - jest-dom
+  - testing-library
+ignorePatterns:
+  - vite.config.ts
+
+rules:
+  // not check import
+  react/react-in-jsx-scope: off
+  // not attatch semi colons
+  semi:
+    - error
+    - never
+  // make default export error
+  import/prefer-default-export: off
+  import/no-default-export: error
+  no-restricted-imports: off
+  "@typescript-eslint/no-restricted-imports":
+    - warn
+    - name: react-redux
+      importNames:
+        - useSelector
+        - useDispatch
+      message: "Use typed hooks `useAppDispatch` and `useAppSelector` instead."

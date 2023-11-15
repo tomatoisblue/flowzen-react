@@ -3,15 +3,15 @@ import './App.css'
 import DashboardPage from "./pages/Dashboard"
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import verifyAuthentication from './components/verifyAuthentication'
 import { login, logout } from './features/authSlice'
 import NotFoundPage from './pages/NotFoundPage'
+import { useAppDispatch, useAppSelector } from './hooks'
 
 const App = () => {
-  const auth = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const checkAuthentication = async () => {

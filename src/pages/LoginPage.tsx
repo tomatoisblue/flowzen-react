@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux";
 import Login from "../components/Login";
+import { useAppSelector } from "../hooks";
 import AuthenticationHeader from "./AuthenticationHeader";
 import { Navigate } from "react-router-dom";
 
 
 const LoginPage: React.FC = () => {
 
-  const auth = useSelector((state: any) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   // const navigate = useNavigate();
   // console.log(auth)
 

@@ -8,8 +8,8 @@ import { useTaskForm } from "../hooks/useTaskForm";
 import { taskFormFields } from "../constants/taskFormField";
 import TaskFormHeader from "./TaskFormHeader";
 import { TaskStatus } from "../types/TaskStatus";
-import { useEffect } from "react";
-
+import { useAppSelector } from "../hooks";
+import Task from "../types/Task";
 
 interface TaskFormProps {
   taskStatus?: TaskStatus,
@@ -19,19 +19,9 @@ interface TaskFormProps {
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}: TaskFormProps) => {
-  const [taskState,, { setTaskState, resetTaskState, handleChange, handleStatusChange, handleSubmit }] = useTaskForm();
-
-  useEffect(() => {
-    if (mode === "create") {
-      setTaskState({...taskState, ["status"]: taskStatus!})
-    }
-
-    return () => {
-      resetTaskState();
-    }
-  }, [])
-
-
+  const [{ handleChange, handleStatusChange, handleSubmit }] = useTaskForm();
+  const currentTask: Task = useAppSelector((state) => state.task.currentTask);
+  console.log("TaskForm")
 
   return (
     <>
@@ -57,7 +47,7 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
                   <Input
                     onChange={handleChange}
                     id={field.id}
-                    value={taskState[field.id] as string}
+                    value={currentTask?.[field.name as keyof Task] as string || ""}
                     label={""}
                     name={field.name}
                     type={field.type}
@@ -66,7 +56,7 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
                 )}
                 {field.id === "status" && (
                   <div>
-                    <Select id={field.id} name={field.name} onChange={handleStatusChange} value={mode === "create" ? taskStatus : taskState[field.id] as string}>
+                    <Select id={field.id} name={field.name} onChange={handleStatusChange} value={mode === "create" ? taskStatus : currentTask?.[field.name as keyof Task] as string}>
                       <Option value="TODO">未着手</Option>
                       <Option value="IN_PROGRESS">進行中</Option>
                       <Option value="DONE">完了</Option>
@@ -85,7 +75,7 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
         </Card>
       </Dialog>
     </>
-  );
+  ); //
 }
 
 export default TaskForm;

@@ -1,10 +1,10 @@
 import Signup from "../components/Signup";
+import { useAppSelector } from "../hooks";
 import AuthenticationHeader from "./AuthenticationHeader";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const SignupPage: React.FC = () => {
-  const auth = useSelector((state: any) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
 
   return (
     <div>

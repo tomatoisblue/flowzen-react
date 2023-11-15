@@ -4,11 +4,11 @@ import { TaskStatus } from "../types/TaskStatus";
 import TaskStackHeader from "./TaskStackHeader";
 import List from "@material-tailwind/react/components/List";
 import ListItem from "@material-tailwind/react/components/List/ListItem";
-import { useDispatch } from "react-redux";
 import { setCurrentTaskID } from "../features/taskSlice";
 import { useState } from "react";
-import TaskCreationForm from "./TaskCreationForm";
+import TaskCreationForm from "./TaskCreationForm.1";
 import TaskEditForm from "./TaskEditForm";
+import { useAppDispatch } from "../hooks";
 
 
 interface TaskStackProps {
@@ -19,7 +19,7 @@ interface TaskStackProps {
 const TaskStack = ({taskStatus, tasks}: TaskStackProps) => {
   const [taskCreateFormOpen, setTaskCreateFormOpen] = useState<boolean>(false);
   const [taskEditFormOpen, setTaskEditFormOpen] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleTaskClick = (taskID: number) => {
     dispatch(setCurrentTaskID(taskID));

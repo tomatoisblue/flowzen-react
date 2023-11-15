@@ -6,10 +6,9 @@ import ListItem from "@material-tailwind/react/components/List/ListItem";
 import TaskCreateFormV2 from "./TaskCreateFormV2";
 import TaskEditFormV2 from "./TaskEditFormV2";
 import TaskStackHeaderV2 from "./TaskStackHeaderV2";
-import { useDispatch } from "react-redux";
-import { setCurrentTaskID } from "../features/taskSlice";
+import { clearCurrentTask, setCurrentTaskID } from "../features/taskSlice";
 import { useState } from "react";
-import { useTaskForm } from "../hooks/useTaskForm"
+import { useAppDispatch } from "../hooks";
 
 interface TaskStackProps {
   taskStatus: TaskStatus
@@ -17,18 +16,29 @@ interface TaskStackProps {
 }
 
 const TaskStackV2 = ({taskStatus, tasks}: TaskStackProps) => {
+  // When it comes to isCreateFormOpen and isEditFormOpen,
+  // if they are FALSE, it means the form is OPENED.
+  // and vice versa.
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false)
   const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false)
-  // const [,, {resetTaskState}] = useTaskForm();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  console.log("TaskStackV2")
 
   const handleCreateFormOpen = () => {
+    console.log("handleCreateFormOpen")
     setIsCreateFormOpen(!isCreateFormOpen);
+    console.log("isCreateFormOpen: " + isCreateFormOpen)
   }
 
   const handleEditFormOpen = () => {
+    console.log("handleEditFormOpen")
     setIsEditFormOpen(!isEditFormOpen);
-    console.log("task edit form => " + isEditFormOpen);
+    // if the form is closed
+    if (isEditFormOpen) {
+      dispatch(clearCurrentTask());
+    }
+    console.log("isEditFormOpen: " + isEditFormOpen)
   }
 
   const handleClick = (taskID: number) => {

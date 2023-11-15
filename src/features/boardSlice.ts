@@ -23,10 +23,14 @@ export const boardSlice = createSlice({
     setCurrentBoardID: (state, action: PayloadAction<number>) => {
       console.log("setting board id : " + action.payload);
       state.currentBoardID = action.payload;
+    },
+    resetCurrentBoardID: (state) => {
+      state.currentBoardID = -1;
     }
+
   }
 })
 
-export const { addBoard, addAllBoards, deleteAllBoards, setCurrentBoardID } = boardSlice.actions;
+export const { addBoard, addAllBoards, deleteAllBoards, setCurrentBoardID, resetCurrentBoardID } = boardSlice.actions;
 
 export default boardSlice.reducer;

@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux";
 import TaskForm from "./TaskForm";
 import { changeToEditMode } from "../features/taskSlice";
 import { useEffect } from "react";
+import { useAppDispatch } from "../hooks";
 
 interface TaskEditFormProps {
   handleOpen: () => void,
@@ -9,10 +9,11 @@ interface TaskEditFormProps {
 }
 
 const TaskEditFormV2: React.FC<TaskEditFormProps> = ({ handleOpen, open}) => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(changeToEditMode());
-  }, [])
+  // const dispatch = useAppDispatch();
+  console.log("TaskEditFormV2")
+  // useEffect(() => {
+  //   dispatch(changeToEditMode());
+  // }, [])
   return (
     <TaskForm handleOpen={handleOpen} mode={"edit"} open={open}/>
   )

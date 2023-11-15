@@ -18,7 +18,6 @@ import {
 
 import { ChevronRightIcon, ChevronDownIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../features/authSlice";
 import Board from "../types/Board";
@@ -26,13 +25,14 @@ import getAllBoards from "./getAllBoards";
 import BoardCreationForm from "./BoardCreationForm";
 import { addAllBoards, deleteAllBoards, setCurrentBoardID } from "../features/boardSlice";
 import deleteBoard from "./deleteBoard";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 
 const GeneralSidebar: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<number>(1);
   const [boardFormOpen, setBoardFormOpen] = useState(false);
-  const boards: Board[] = useSelector((state: any) => state.board.boards);
-  const dispatch = useDispatch();
+  const boards: Board[] = useAppSelector((state) => state.board.boards);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const GeneralSidebar: React.FC = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="currentColor"
-                            className="h-5 w-5"
+                            // className="h-5 w-5"
                           >
                             <path
                               fillRule="evenodd"

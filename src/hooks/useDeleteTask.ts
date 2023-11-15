@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux"
 import deleteTask from "../components/deleteTask";
+import { useAppSelector } from "../hooks";
 import { useFetchTasksByBoardID } from "./useFetchTasksByboardID";
 
 export const useDeleteTask = () => {
-  const currentTaskID = useSelector((state: any) => state.task.currentTaskID);
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+  const currentTaskID = useAppSelector((state: any) => state.task.currentTaskID);
+  const currentBoardID = useAppSelector((state: any) => state.board.currentBoardID);
   const fetchTasksByBoardID = useFetchTasksByBoardID();
 
   // const handleDeleteTask = async () => {

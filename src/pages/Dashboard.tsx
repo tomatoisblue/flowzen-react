@@ -1,33 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import GeneralSidebar from "../components/GeneralSidebar";
-import { useEffect } from "react";
-import TaskLists from "../components/TaskLists";
-import { addAllTasks, removeAllTasks } from "../features/taskSlice";
-import Task from "../types/Task";
-import getAllTasksByBoardID from "../components/getAllTasksByBoardID";
 import TaskListsV2 from "../components/TaskListsV2";
+import { useAppSelector } from "../hooks";
 
 const Dashboard: React.FC = () => {
-  const auth = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+  const auth = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (currentBoardID === -1) {
-      dispatch(removeAllTasks())
-    }
-    fetchTasksByBoardID();
-  }, [currentBoardID])
-
-  const fetchTasksByBoardID = async () => {
-    console.log("fetchTasksByBoardID...");
-    if (currentBoardID > 0) {
-      console.log("currentBoardId is valid")
-      const fetchedTasks: Task[] = await getAllTasksByBoardID(currentBoardID);
-      dispatch(addAllTasks(fetchedTasks));
-    }
-  }
+  console.log("Dashboard")
 
   return (
     <div>
@@ -37,7 +16,6 @@ const Dashboard: React.FC = () => {
       ): (
         <div className="flex">
           <GeneralSidebar />
-          {/* <TaskLists /> */}
           <TaskListsV2 />
         </div>
       )}

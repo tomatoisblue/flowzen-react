@@ -5,8 +5,8 @@ import Input from "./Input";
 import FormAction from "./FormAction";
 import apiConfig from "../constants/apiConfig";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
+import { useAppDispatch } from "../hooks";
 
 
 type Fields ={ [key: string]: string }
@@ -19,7 +19,7 @@ fields.forEach(field => fieldsState[field.id]="");
 const Login: React.FC = () => {
   const [loginState, setLoginState] = useState<Fields>(fieldsState);
   // const [token, setToken] = useState<string>("");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const LOGIN_URL = `${apiConfig.baseUrl}/login`;

@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
 import TaskStack from "./TaskStack";
 import { Typography } from "@material-tailwind/react";
 
 const TaskLists = () => {
-  const allTasks: Task[] = useSelector((state: any) => state.task.tasks);
+  const allTasks: Task[] = useAppSelector((state) => state.task.tasks);
   const todoTasks: Task[] | undefined = allTasks.filter((task) => task.status === "TODO");
   const inProgressTasks: Task[] | undefined = allTasks.filter((task) => task.status === "IN_PROGRESS");
   const doneTasks: Task[] | undefined = allTasks.filter((task) => task.status === "DONE");
-  const currentBoardID = useSelector((state: any) => state.board.currentBoardID);
+  const currentBoardID = useAppSelector((state) => state.board.currentBoardID);
 
   return (
     <div className="flex w-full">

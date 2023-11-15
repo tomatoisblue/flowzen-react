@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux";
 import { logout } from '../features/authSlice'
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from '../hooks';
 
 const Logout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const logoutProcess = async () => {

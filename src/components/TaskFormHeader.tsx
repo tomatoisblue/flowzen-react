@@ -1,8 +1,6 @@
 import Typography from "@material-tailwind/react/components/Typography";
 import Button from "@material-tailwind/react/components/Button";
 import { useTaskForm } from "../hooks/useTaskForm";
-import { useSelector } from "react-redux";
-import { TaskFormMode } from "../features/taskSlice";
 
 interface TaskFormHeaderProps {
   mode: "create" | "edit"
@@ -10,8 +8,7 @@ interface TaskFormHeaderProps {
 }
 
 const TaskFormHeader = ({ mode, handleOpen }: TaskFormHeaderProps) => {
-  // const taskFormMode: TaskFormMode = useSelector((state: any) => state.task.taskFormMode);
-  const [,, {handleDeleteTask}] = useTaskForm();
+  const [{handleDeleteTask}] = useTaskForm();
 
 
   return (
