@@ -11,7 +11,6 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import {
-  // PresentationChartBarIcon,
   PowerIcon,
   DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
@@ -106,7 +105,7 @@ const GeneralSidebar: React.FC = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="currentColor"
-                            // className="h-5 w-5"
+                            className="h-5 w-5"
                           >
                             <path
                               fillRule="evenodd"

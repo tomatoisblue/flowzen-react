@@ -58,7 +58,7 @@ const TaskStackV2 = ({taskStatus, tasks}: TaskStackProps) => {
           <ListItem
             key={task.taskId}
             onClick={() => handleClick(task.taskId!)}
-            className={index %2 === 0 ? 'bg-white' : 'bg-pink-50'}
+            className={`${index %2 === 0 ? 'bg-white' : 'bg-pink-50'} hover:border border border-transparent hover:border-black hover:bg-white`}
             >
               {task.title}
           </ListItem>)

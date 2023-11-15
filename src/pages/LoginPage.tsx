@@ -7,16 +7,6 @@ import { Navigate } from "react-router-dom";
 const LoginPage: React.FC = () => {
 
   const auth = useAppSelector((state) => state.auth);
-  // const navigate = useNavigate();
-  // console.log(auth)
-
-  // useEffect(() => {
-  //   if (auth.IsLoggedIn === true) {
-  //     console.log("auth.IsLoggedIn : " + auth.IsLoggedIn ? "true" : "false");
-  //     navigate("/dashboard");
-  //   }
-  // }, [auth.isLoggedIn])
-
 
   return (
     <div>

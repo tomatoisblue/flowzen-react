@@ -9,7 +9,7 @@ interface TaskFields {
 }
 const taskFormFields: TaskFields[]=[
     {
-        labelText:"タイトル",
+        labelText:"タイトル(*)",
         labelFor:"title",
         id:"title",
         name:"title",
@@ -18,7 +18,7 @@ const taskFormFields: TaskFields[]=[
         placeholder:"メールを送信"
     },
     {
-        labelText:"ステータス",
+        labelText:"ステータス(*)",
         labelFor:"status",
         id:"status",
         name:"status",

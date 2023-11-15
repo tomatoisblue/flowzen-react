@@ -39,7 +39,7 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
             {taskFormFields.map((field) =>
               <>
                 <Typography
-                  className="mb-1 font-normal"
+                  className="my-1 font-normal"
                   color="gray">
                   {field.labelText}
                 </Typography>
