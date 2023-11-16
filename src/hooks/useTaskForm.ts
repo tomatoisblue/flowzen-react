@@ -16,7 +16,6 @@ export const useTaskForm = () => {
   const currentTaskID: number = useAppSelector((state) => state.task.currentTaskID);
   const currentTask: Task = useAppSelector((state) => state.task.currentTask);
   const currentBoardID: number = useAppSelector((state) => state.board.currentBoardID);
-  const isTaskFormValid: boolean = useAppSelector((state) => state.task.isTaskFormValid);
   const taskValidationErrors: TaskValidationError = useAppSelector((state) => state.task.taskFormValidationErrors)
 
   useEffect(() => {

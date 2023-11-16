@@ -4,74 +4,63 @@ interface UserFields {
     id: string
     name: string
     type: string
-    autoComplete: string
     isRequired: boolean
-    placeholder: string
+    placeholder?: string
 }
-const loginFields: UserFields[]=[
+const loginFormFields: UserFields[]=[
     {
-        labelText:"メールアドレス",
-        labelFor:"email-address",
-        id:"email-address",
+        labelText:"メールアドレス(*)",
+        labelFor:"email",
+        id:"email",
         name:"email",
         type:"email",
-        autoComplete:"email",
         isRequired:true,
-        placeholder:"メールアドレス"
+        placeholder:"your_email@example.com"
     },
     {
-        labelText:"パスワード",
+        labelText:"パスワード(*)",
         labelFor:"password",
         id:"password",
         name:"password",
         type:"password",
-        autoComplete:"current-password",
         isRequired:true,
-        placeholder:"パスワード"
-    }
+    },
 ]
 
-const signupFields: UserFields[] =[
+const signupFormFields: UserFields[]=[
     {
-        labelText:"ユーザーネーム",
+        labelText:"ユーザーネーム(*)",
         labelFor:"username",
         id:"username",
         name:"username",
         type:"text",
-        autoComplete:"username",
         isRequired:true,
-        placeholder:"ユーザーネーム"
+        placeholder:"your_username"
     },
     {
-        labelText:"メールアドレス",
-        labelFor:"email-address",
-        id:"email-address",
+        labelText:"メールアドレス(*)",
+        labelFor:"email",
+        id:"email",
         name:"email",
         type:"email",
-        autoComplete:"email",
         isRequired:true,
-        placeholder:"メールアドレス"
+        placeholder:"your_email@example.com"
     },
     {
-        labelText:"パスワード",
+        labelText:"パスワード(*)",
         labelFor:"password",
         id:"password",
         name:"password",
         type:"password",
-        autoComplete:"current-password",
         isRequired:true,
-        placeholder:"パスワード"
     },
     {
-        labelText:"パスワード(確認)",
+        labelText:"確認用パスワード(*)",
         labelFor:"confirm-password",
         id:"confirm-password",
-        name:"confirm-password",
+        name:"confirmPassword",
         type:"password",
-        autoComplete:"confirm-password",
         isRequired:true,
-        placeholder:"パスワード(確認)"
-    }
+    },
 ]
-
-export {loginFields,signupFields}
+export {loginFormFields, signupFormFields}

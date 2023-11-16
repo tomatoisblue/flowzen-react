@@ -5,9 +5,10 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import { useEffect } from 'react'
 import verifyAuthentication from './components/verifyAuthentication'
-import { login, logout } from './features/authSlice'
+import { setLogin, setLogout } from './features/authSlice'
 import NotFoundPage from './pages/NotFoundPage'
 import { useAppDispatch, useAppSelector } from './hooks'
+import AuthenticationPage from './pages/AuthenticationPage'
 
 const App = () => {
   const auth = useAppSelector((state) => state.auth);
@@ -18,10 +19,10 @@ const App = () => {
       const result: boolean = await verifyAuthentication();
       if (result === true) {
         console.log("varification succeeded")
-        dispatch(login());
+        dispatch(setLogin());
       } else {
         console.log("varification failed")
-        dispatch(logout());
+        dispatch(setLogout());
       }
     }
 
@@ -30,7 +31,7 @@ const App = () => {
 
 
   return (
-    <div className='min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='w-screen min-w-full min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-md w-full space-y-8'>
         <BrowserRouter>
           <Routes>
@@ -39,10 +40,11 @@ const App = () => {
                 <Route path="/dashboard" element={<DashboardPage />} />
               </>
             ): (
-              <>
-                <Route path="/" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-              </>
+              // <>
+              //   <Route path="/" element={<LoginPage />} />
+              //   <Route path="/signup" element={<SignupPage />} />
+              // </>
+              <Route path="/" element={<AuthenticationPage />} />
             )}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

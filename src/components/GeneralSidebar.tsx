@@ -18,7 +18,7 @@ import {
 import { ChevronRightIcon, ChevronDownIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../features/authSlice";
+import { setLogout } from "../features/authSlice";
 import Board from "../types/Board";
 import getAllBoards from "./getAllBoards";
 import BoardCreationForm from "./BoardCreationForm";
@@ -54,7 +54,7 @@ const GeneralSidebar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    dispatch(logout());
+    dispatch(setLogout());
     dispatch(deleteAllBoards())
     navigate("/");
   }
