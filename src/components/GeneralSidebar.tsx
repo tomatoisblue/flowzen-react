@@ -38,6 +38,15 @@ const GeneralSidebar: React.FC = () => {
     fetchBoards();
   }, [])
 
+  useEffect(() => {
+    if (boards.length > 0) {
+      const firstBoardID = boards[0].boardId;
+      dispatch(setCurrentBoardID(firstBoardID))
+    }
+
+  }, [boards])
+
+
   const fetchBoards = async () => {
     const fetchedBoards: Board[] = await getAllBoards();
     dispatch(addAllBoards(fetchedBoards));

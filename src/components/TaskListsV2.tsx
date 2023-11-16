@@ -47,7 +47,7 @@ const TaskLists = () => {
         <div className="h-screen w-screen">
           <div className="w-full h-full m-20">
             <Typography variant="h5">
-              ボードを選択してください
+              ボードを作成してください
             </Typography>
           </div>
         </div>
