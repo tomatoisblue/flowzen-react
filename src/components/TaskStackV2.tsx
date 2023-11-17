@@ -50,7 +50,7 @@ const TaskStackV2 = ({taskStatus, tasks}: TaskStackProps) => {
 
 
   return (
-    <Card className="w-96">
+    <Card className="w-80">
       <TaskCreateFormV2 taskStatus={taskStatus} handleOpen={handleCreateFormOpen} open={isCreateFormOpen} />
       <TaskEditFormV2 handleOpen={handleEditFormOpen} open={isEditFormOpen} />
       <TaskStackHeaderV2 taskStatus={taskStatus} handleOpen={handleCreateFormOpen} />

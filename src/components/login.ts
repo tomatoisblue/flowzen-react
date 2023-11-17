@@ -23,13 +23,16 @@ export const login = async ({email, password}: LoginProps): Promise<boolean> => 
       }
     );
 
-    if(!res.headers || !res.headers["x-auth-token"]) {
+    if (!res.headers || !res.headers["x-auth-token"]) {
       return false;
     }
+
+
     console.log("JWT=> " + res.headers["x-auth-token"]);
     localStorage.setItem("token", res.headers["x-auth-token"]);
     return true;
   } catch (err) {
+    console.log("axios error")
     console.log(err);
     return false;
   }

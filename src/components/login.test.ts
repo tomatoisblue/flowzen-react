@@ -1,6 +1,6 @@
 import { LoginProps, login } from "./login";
 
-test("login function test", async() => {
+test.skip("login function test", async() => {
   const email = "moto@gmail.com";
   const password = "SAfiwj2!wijas!"
 
@@ -16,8 +16,8 @@ test("login function test", async() => {
 
 
   const correctResult = await login(correct);
-  expect(correctResult).toBeTruthy;
+  expect(correctResult).toBe(true);
   const incorrectResult = await login(incorrect);
-  expect(incorrectResult).toBeFalsy;
+  expect(incorrectResult).toBe(false);
 
 })

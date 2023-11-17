@@ -11,7 +11,6 @@ import { TaskStatus } from "../types/TaskStatus";
 import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
 import { TaskValidationError } from "../features/taskSlice";
-import { useEffect } from "react";
 
 interface TaskFormProps {
   taskStatus?: TaskStatus,

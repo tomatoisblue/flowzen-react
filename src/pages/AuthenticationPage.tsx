@@ -8,11 +8,13 @@ const AuthenticationPage: React.FC = () => {
   const auth = useAppSelector((state) => state.auth);
 
   return (
-    <div className="">
+    <div className="w-full min-h-full flex items-center pt-5 justify-center ">
       {auth.isLoggedIn === true ? (
         <Navigate to="/dashboard" replace={true} />
       ): <></>}
-      <AuthenticationForm />
+      <div className="w-1/3">
+        <AuthenticationForm />
+      </div>
     </div>
   )
 }

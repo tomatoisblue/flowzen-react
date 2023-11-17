@@ -10,7 +10,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <div className="w-full p-8">
+      <div className="w-screen h-screen">
       {auth.isLoggedIn === false ? (
         <Navigate to="/" replace={true} />
       ): (

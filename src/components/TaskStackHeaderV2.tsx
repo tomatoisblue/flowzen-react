@@ -45,7 +45,7 @@ const TaskStackHeaderV2: React.FC<TaskStackHeaderProps> = ({ taskStatus, handleO
   }
 
   return (
-    <div className="flex px-3 border-double border-b-4 border-blue-gray-100">
+    <div className="flex px-3 border-double border-b-4 border-blue-gray-100 bg-gray-100">
       <div className="text-center w-full place-items-center">
         <Typography variant="h5" className="my-2 font-normal">{title}</Typography>
       </div>

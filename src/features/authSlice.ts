@@ -8,36 +8,66 @@ export interface UserLoginFormValidation {
 }
 
 const initialUserLoginFormValidations: UserLoginFormValidation = {
-  email: false,
-  password: false
+  email: true,
+  password: true
 }
 
 export interface UserSignupFormValidation {
   username: boolean
+  usernameUnique: boolean
   email: boolean
+  emailUnique: boolean
   password: boolean
-  isPasswordMatch: boolean
+  confirmPassword: boolean
+}
+
+export interface UniqueField {
+  username: boolean
+  email: boolean
 }
 
 const initialUserSignupFormValidations: UserSignupFormValidation = {
-  username: false,
-  email: false,
-  password: false,
-  isPasswordMatch: false
+  username: true,
+  usernameUnique: true,
+  email: true,
+  emailUnique: true,
+  password: true,
+  confirmPassword: true
 }
 
-export interface AuthValidationError {
-  username?: string[]
-  email?: string[]
-  password?: string
-  isPasswordMatch?: string
+const initialUniqueFields: UniqueField = {
+  username: true,
+  email: true
 }
 
-const initialAuthVlidationErrors: AuthValidationError = {
-
+export interface OtherValidationError {
+  unauthorized: boolean
+  somethingBad: boolean
 }
 
+const initialOtherValidationErrors: OtherValidationError = {
+  unauthorized: false,
+  somethingBad: false,
+}
 
+// export interface AuthValidationError = {
+//   username?: string
+//   usernameUnique?: string
+//   email?: string
+//   emailUnique?: string
+//   password?: string
+//   confirmPassword?: string
+//   unauthorized?: string
+//   somethingBad?: string
+// }
+
+// export type AuthValidationErrorField = "username" | "usernameUnique" | "email" | "emailUnique" | "password" | "confirmPassword" | "unauthorized" | "somethingBad";
+
+// export type AuthValidationError = { [key: AuthValidationErrorField]: string};
+
+// const initialAuthVlidationErrors: AuthValidationError = {
+
+// }
 
 export interface UserLoginForm {
   email: string | null
@@ -63,7 +93,6 @@ const initialUserSignupForm: UserSignupForm = {
   confirmPassword: null,
 }
 
-
 interface AuthSliceState {
   isLoggedIn: boolean
   authType: AuthType
@@ -71,7 +100,9 @@ interface AuthSliceState {
   userSignupForm: UserSignupForm
   userLoginFormValidations: UserLoginFormValidation
   userSignupFormValidations: UserSignupFormValidation
-  authValidationErrors: AuthValidationError
+  uniqueFields: UniqueField
+  otherValidationErrors: OtherValidationError
+  // authValidationErrors: AuthValidationError
 }
 
 const initialState: AuthSliceState = {
@@ -81,7 +112,9 @@ const initialState: AuthSliceState = {
   userSignupForm: initialUserSignupForm,
   userLoginFormValidations: initialUserLoginFormValidations,
   userSignupFormValidations: initialUserSignupFormValidations,
-  authValidationErrors: initialAuthVlidationErrors,
+  // authValidationErrors: initialAuthVlidationErrors,
+  uniqueFields: initialUniqueFields,
+  otherValidationErrors: initialOtherValidationErrors,
 }
 
 export const authSlice = createSlice({
@@ -98,39 +131,97 @@ export const authSlice = createSlice({
     },
     setAuthType: (state, action: PayloadAction<AuthType>) => {
       state.authType = action.payload;
+      state.userLoginFormValidations = initialUserLoginFormValidations;
+      state.userSignupFormValidations = initialUserSignupFormValidations;
       console.log("AUTH TYPE ===>>>" + state.authType);
     },
     setLoginForm: (state, action: PayloadAction<UserLoginForm>) => {
       state.userLoginForm = action.payload;
-      console.log("current login form => ")
-      console.log(JSON.stringify(state.userLoginForm));
     },
     resetLoginForm: (state) => {
       state.userLoginForm = initialUserLoginForm;
     },
     setSignupForm: (state, action: PayloadAction<UserSignupForm>) => {
       state.userSignupForm = action.payload;
-      console.log("current signup form => ")
-      console.log(JSON.stringify(state.userSignupForm));
     },
     resetSignupForm: (state) => {
       state.userSignupForm = initialUserSignupForm;
     },
-    setUserLoginFormValidations: (state, action: PayloadAction<UserLoginFormValidation>) => {
-      state.userLoginFormValidations = action.payload;
+    setTrueUserLoginFormValidations: (state, action: PayloadAction<keyof UserLoginFormValidation>) => {
+      state.userLoginFormValidations[action.payload] = true;
     },
-    setUserSignupFormValidations: (state, action: PayloadAction<UserSignupFormValidation>) => {
-      state.userSignupFormValidations = action.payload;
+    setFalseUserLoginFormValidations: (state, action: PayloadAction<keyof UserLoginFormValidation>) => {
+      state.userLoginFormValidations[action.payload] = false;
     },
-    setAuthValidationErrors: (state, action: PayloadAction<AuthValidationError>) => {
-      state.authValidationErrors = action.payload;
+    setTrueUserSignupFormValidations: (state, action: PayloadAction<keyof UserSignupFormValidation>) => {
+      state.userSignupFormValidations[action.payload] = true;
     },
-    unsetAuthValidationErrors: (state) => {
-      state.authValidationErrors = initialAuthVlidationErrors;
+    setFalseUserSignupFormValidations: (state, action: PayloadAction<keyof UserSignupFormValidation>) => {
+      state.userSignupFormValidations[action.payload] = false;
     },
-  }
+    setTrueUniqueFields: (state, action: PayloadAction<keyof UniqueField>) => {
+      state.uniqueFields[action.payload] = true;
+    },
+    setFalseUniqueFields: (state, action: PayloadAction<keyof UniqueField>) => {
+      state.uniqueFields[action.payload] = false;
+    },
+    setTrueOtherValidationErrors: (state, action: PayloadAction<keyof OtherValidationError>) => {
+      state.otherValidationErrors[action.payload] = true;
+    },
+    setFalseOtherValidationErrors: (state, action: PayloadAction<keyof OtherValidationError>) => {
+      state.otherValidationErrors[action.payload] = false;
+    },
+    resetAllValidationState: (state) => {
+      state.userLoginFormValidations = initialUserLoginFormValidations;
+      state.userSignupFormValidations = initialUserSignupFormValidations;
+      state.uniqueFields = initialUniqueFields;
+      state.otherValidationErrors = initialOtherValidationErrors;
+    },
+    resetAllAuthenticationForms: (state) => {
+      state.userLoginForm = initialUserLoginForm;
+      state.userSignupForm = initialUserSignupForm;
+    }
+
+    // setUserSignupFormValidations: (state, action: PayloadAction<UserSignupFormValidation>) => {
+    //   state.userSignupFormValidations = action.payload;
+    // },
+    // setAuthValidationErrors: (state, action: PayloadAction<AuthValidationError>) => {
+    //   state.authValidationErrors = action.payload;
+    //   // console.log("set AuthValidationErrors=>");
+
+    //   console.log(JSON.stringify(state.authValidationErrors));
+    // },
+    // unsetAuthValidationErrors: (state, action: PayloadAction<keyof AuthValidationError>) => {
+    //   delete state.authValidationErrors[action.payload];
+    //   // console.log("unset AuthValidationErrors key:" + action.payload + " =>");
+    //   // console.log(JSON.stringify(state.authValidationErrors));
+    // },
+    // clearAuthValidationErrors: (state) => {
+    //   state.authValidationErrors = initialAuthVlidationErrors;
+    //   console.log("auth validation errors cleared");
+    // }
+  },
 })
 
-export const { setLogin, setLogout, setAuthType, setLoginForm, resetLoginForm, setSignupForm, resetSignupForm, setUserLoginFormValidations, setUserSignupFormValidations, setAuthValidationErrors, unsetAuthValidationErrors } = authSlice.actions;
+// export const { setLogin, setLogout, setAuthType, setLoginForm, resetLoginForm, setSignupForm, resetSignupForm, setUserLoginFormValidations, setUserSignupFormValidations, setAuthValidationErrors, unsetAuthValidationErrors, clearAuthValidationErrors } = authSlice.actions;
+export const { setLogin,
+               setLogout,
+               setAuthType,
+               setLoginForm,
+               resetLoginForm,
+               setSignupForm,
+               resetSignupForm,
+               setTrueUserLoginFormValidations,
+               setFalseUserLoginFormValidations,
+               setTrueUserSignupFormValidations,
+               setFalseUserSignupFormValidations,
+               setTrueUniqueFields,
+               setFalseUniqueFields,
+               setTrueOtherValidationErrors,
+               setFalseOtherValidationErrors,
+               resetAllValidationState,
+               resetAllAuthenticationForms,
+              } = authSlice.actions;
+
 
 export default authSlice.reducer;
