@@ -9,6 +9,7 @@ import { taskDescriptionValidation } from "../validation/tasks/taskDescriptionVa
 import { taskUrlValidation } from "../validation/tasks/taskUrlValidation";
 import { taskTitleValidation } from "../validation/tasks/taskTitleValidation";
 import { taskStatusValidation } from "../validation/tasks/taskStatusValidation";
+import { convertDateFormat } from "../components/convertDateFormat";
 
 export const useTaskForm = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +32,7 @@ export const useTaskForm = () => {
     if (e.target.value !== null) {
       switch (e.target.id) {
         case "expiration-date":
-          value = new Date(Date.parse(e.target.value));
+          value = convertDateFormat(new Date(Date.parse(e.target.value)));
           console.log("exp date : " + value)
           break;
         default:

@@ -12,6 +12,7 @@ import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
 import { TaskFormValidation } from "../features/taskSlice";
 import { taskValidationErrorMessages } from "../constants/taskValidationErrorMessages";
+import { convertDateFormat } from "./convertDateFormat";
 
 interface TaskFormProps {
   taskStatus?: TaskStatus,
@@ -68,7 +69,12 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
                   <Input
                     onChange={handleChange}
                     id={field.id}
-                    value={currentTask?.[field.name as keyof Task] as string || ""}
+                    // value={currentTask?.[field.name as keyof Task] as string || ""}
+                    value={
+                      currentTask && field.id === "expiration-date" && currentTask?.expirationDate !== null ?
+                      convertDateFormat(currentTask.expirationDate!) :
+                      currentTask?.[field.name as keyof Task] as string || ""
+                    }
                     label={""}
                     name={field.name}
                     type={field.type}
