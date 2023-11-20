@@ -26,12 +26,14 @@ import deleteBoard from "./deleteBoard";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import BoardCreateForm from "./BoardCreateForm";
 import BoardEditForm from "./BoardEditForm";
+import AccountDeleteDialog from "./AccountDeleteDialog";
 
 
 const GeneralSidebar: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<number>(1);
-  const [boardCreateFormOpen, setBoardCreateFormOpen] = useState<boolean>(false)
-  const [boardEditFormOpen, setBoardEditFormOpen] = useState<boolean>(false)
+  const [boardCreateFormOpen, setBoardCreateFormOpen] = useState<boolean>(false);
+  const [boardEditFormOpen, setBoardEditFormOpen] = useState<boolean>(false);
+  const [accountDeleteDialogOpen, setAccountDeleteDialogOpen] = useState<boolean>(false);
   const boards: Board[] = useAppSelector((state) => state.board.boards);
   const currentBoardID: number = useAppSelector((state) => state.board.currentBoardID);
   const dispatch = useAppDispatch();
@@ -63,6 +65,10 @@ const GeneralSidebar: React.FC = () => {
 
   const handleBoardEditFormOpen = () => {
     setBoardEditFormOpen(!boardEditFormOpen);
+  }
+
+  const handleAccountDeleteDialogOpen = () => {
+    setAccountDeleteDialogOpen(!accountDeleteDialogOpen);
   }
 
   const handleClick = () => {
@@ -101,6 +107,7 @@ const GeneralSidebar: React.FC = () => {
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] shadow-xl shadow-blue-gray-900/5">
       <BoardCreateForm open={boardCreateFormOpen} handleOpen={handleBoardCreateFormOpen} />
       <BoardEditForm open={boardEditFormOpen} handleOpen={handleBoardEditFormOpen} />
+      <AccountDeleteDialog open={accountDeleteDialogOpen} handleOpen={handleAccountDeleteDialogOpen} handleLogout={handleLogout} />
       <List>
         <Accordion
           open={sidebarOpen === 1}
@@ -183,6 +190,27 @@ const GeneralSidebar: React.FC = () => {
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
           ログアウト
+        </ListItem>
+        <ListItem
+          onClick={handleAccountDeleteDialogOpen}
+          className="bg-red-300 hover:bg-red-600"
+        >
+          <ListItemPrefix>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-5 h-5">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            </svg>
+          </ListItemPrefix>
+          アカウント削除
         </ListItem>
       </List>
     </Card>
