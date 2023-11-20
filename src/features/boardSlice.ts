@@ -44,6 +44,7 @@ export const boardSlice = createSlice({
     setCurrentBoardID: (state, action: PayloadAction<number>) => {
       state.currentBoardID = action.payload;
       state.currentBoard = state.boards.find((board) => board.boardId === state.currentBoardID)!;
+      console.log("currentBoardID : " + state.currentBoardID)
     },
     setCurrentBoard: (state, action: PayloadAction<Board>) => {
       state.currentBoard = action.payload;

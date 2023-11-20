@@ -39,12 +39,18 @@ export const useBoardForm = () => {
     let tmpResult: boolean = false;
     let flag: boolean = true;
     Object.keys(currentBoard).map((key) => {
+      if (key === "boardId") {
+        return;
+      }
       switch (key) {
+        case "boardId":
+          break;
         case "title":
           tmpResult = boardTitleValidation(currentBoard[key]);
           break;
         default:
           console.log("board validation key error")
+          console.log("key : " + key)
       }
       if (tmpResult) {
         dispatch(setTrueBoardFormValidations(key as keyof BoardFormValidation));

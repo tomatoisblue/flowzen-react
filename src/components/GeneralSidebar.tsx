@@ -21,10 +21,11 @@ import { useNavigate } from "react-router-dom";
 import { setLogout } from "../features/authSlice";
 import Board from "../types/Board";
 import getAllBoards from "./getAllBoards";
-import { addAllBoards, deleteAllBoards, fetchAllBoards, resetCurrentBoard, setCurrentBoard, setCurrentBoardID } from "../features/boardSlice";
+import { addAllBoards, deleteAllBoards, fetchAllBoards, resetBoardFormValidations, resetCurrentBoard, setCurrentBoard, setCurrentBoardID } from "../features/boardSlice";
 import deleteBoard from "./deleteBoard";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import BoardCreateForm from "./BoardCreateForm";
+import BoardEditForm from "./BoardEditForm";
 
 
 const GeneralSidebar: React.FC = () => {
@@ -75,6 +76,13 @@ const GeneralSidebar: React.FC = () => {
     setSidebarOpen(sidebarOpen === value ? 0 : value);
   }
 
+  const handleEditClick = (boardId: number) => {
+    console.log("handleEditClick")
+    dispatch(setCurrentBoardID(boardId));
+    dispatch(resetBoardFormValidations());
+    handleBoardEditFormOpen();
+  }
+
   const handleDeleteBoard = async (boardID: number) => {
     const result = await deleteBoard(boardID);
     if (!result) { return }
@@ -91,8 +99,8 @@ const GeneralSidebar: React.FC = () => {
 
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] shadow-xl shadow-blue-gray-900/5">
-      {/* <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/> */}
       <BoardCreateForm open={boardCreateFormOpen} handleOpen={handleBoardCreateFormOpen} />
+      <BoardEditForm open={boardEditFormOpen} handleOpen={handleBoardEditFormOpen} />
       <List>
         <Accordion
           open={sidebarOpen === 1}
@@ -120,12 +128,28 @@ const GeneralSidebar: React.FC = () => {
                   <>
                     <ListItem key={board.boardId}
                               onClick={() => dispatch(setCurrentBoardID(board.boardId!))}
-                              className={`border-${board.boardId === currentBoardID ? '2' : '0'}`}>
-                      <ListItemPrefix>
+                              className={`flex border-${board.boardId === currentBoardID ? '2' : '0'}`}>
+                      <ListItemPrefix className="w-1/6">
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      {board.title}
-                      <ListItemSuffix>
+                      <div className="w-1/2">
+                        {board.title}
+                      </div>
+                      <ListItemSuffix className="w-1/3 flex">
+                        <IconButton variant="text" color="blue-gray" onClick={() => handleEditClick(board.boardId!)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                          </svg>
+                        </IconButton>
                         <IconButton variant="text" color="blue-gray" onClick={() => handleDeleteBoard(board.boardId!)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +177,6 @@ const GeneralSidebar: React.FC = () => {
             <DocumentPlusIcon className="h-5 w-5" />
           </ListItemPrefix>
             新規ボード作成
-            {/* <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/> */}
         </ListItem>
         <ListItem onClick={handleLogout}>
           <ListItemPrefix>
