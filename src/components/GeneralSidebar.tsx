@@ -112,7 +112,7 @@ const GeneralSidebar: React.FC = () => {
           }
         >
           <ListItem className="p-0" selected={sidebarOpen === 1}>
-            <AccordionHeader onClick={() => handleSidebarOpen(1)} className="border-b-0 p-3">
+            <AccordionHeader onClick={() => handleSidebarOpen(1)} className="border-b-0 p-3 bg-pink-100">
               <ListItemPrefix>
                 <RectangleStackIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -128,7 +128,7 @@ const GeneralSidebar: React.FC = () => {
                   <>
                     <ListItem key={board.boardId}
                               onClick={() => dispatch(setCurrentBoardID(board.boardId!))}
-                              className={`flex border-${board.boardId === currentBoardID ? '2' : '0'}`}>
+                              className={`flex ${board.boardId === currentBoardID && 'bg-pink-50'}`}>
                       <ListItemPrefix className="w-1/6">
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>

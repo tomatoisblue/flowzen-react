@@ -32,7 +32,7 @@ const App = () => {
 
   return (
     // <div className="w-screen min-w-full min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div className="w-screen min-w-full min-h-full h-screen">
+    <div className="w-screen min-w-full min-h-full h-screen bg-blue-gray-100 bg-opacity-30">
       {/* <div className="max-w-md w-full space-y-8"> */}
         <BrowserRouter>
           <Routes>

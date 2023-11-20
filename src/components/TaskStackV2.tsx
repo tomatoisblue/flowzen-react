@@ -1,4 +1,4 @@
-import Card from "@material-tailwind/react/components/Card";
+import Card, { CardHeader } from "@material-tailwind/react/components/Card";
 import Task from "../types/Task";
 import { TaskStatus } from "../types/TaskStatus";
 import List from "@material-tailwind/react/components/List";
@@ -54,7 +54,9 @@ const TaskStackV2 = ({taskStatus, tasks}: TaskStackProps) => {
     <Card className="w-80">
       <TaskCreateFormV2 taskStatus={taskStatus} handleOpen={handleCreateFormOpen} open={isCreateFormOpen} />
       <TaskEditFormV2 handleOpen={handleEditFormOpen} open={isEditFormOpen} />
-      <TaskStackHeaderV2 taskStatus={taskStatus} handleOpen={handleCreateFormOpen} />
+      <CardHeader>
+        <TaskStackHeaderV2 taskStatus={taskStatus} handleOpen={handleCreateFormOpen} />
+      </CardHeader>
       <List>
         {tasks && tasks.map((task, index) =>
           <ListItem

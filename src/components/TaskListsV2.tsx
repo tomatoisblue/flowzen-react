@@ -36,7 +36,7 @@ const TaskLists = () => {
 
 
   return (
-    <div className="flex w-full p-6">
+    <div className="flex  w-full p-6">
       {currentBoardID !== -1 ? (
         <>
           <TaskStackV2 taskStatus={"TODO"} tasks={todoTasks} />

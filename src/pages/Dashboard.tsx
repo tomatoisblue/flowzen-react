@@ -10,11 +10,11 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <div className="w-screen h-screen">
+      <div className="">
       {auth.isLoggedIn === false ? (
         <Navigate to="/" replace={true} />
       ): (
-        <div className="flex">
+        <div className="flex p-4">
           <GeneralSidebar />
           <TaskListsV2 />
         </div>
