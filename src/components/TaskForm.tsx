@@ -10,7 +10,8 @@ import TaskFormHeader from "./TaskFormHeader";
 import { TaskStatus } from "../types/TaskStatus";
 import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
-import { TaskValidationError } from "../features/taskSlice";
+import { TaskFormValidation, TaskValidationError } from "../features/taskSlice";
+import { taskValidationErrorMessages } from "../constants/taskValidationErrorMessages";
 
 interface TaskFormProps {
   taskStatus?: TaskStatus,
@@ -22,7 +23,8 @@ interface TaskFormProps {
 const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}: TaskFormProps) => {
   const [{ handleChange, handleStatusChange, handleSubmit }] = useTaskForm();
   const currentTask: Task = useAppSelector((state) => state.task.currentTask);
-  const taskFormValidationErrors: TaskValidationError = useAppSelector((state) => state.task.taskFormValidationErrors);
+  // const taskFormValidationErrors: TaskValidationError = useAppSelector((state) => state.task.taskFormValidationErrors);
+  const taskFormValidations: TaskFormValidation = useAppSelector((state) => state.task.taskFormValidations);
 
   console.log("TaskForm")
 
@@ -47,11 +49,18 @@ const TaskForm: React.FC<TaskFormProps> = ({taskStatus, handleOpen, mode, open}:
                     color="gray">
                     {field.labelText}
                   </Typography>
-                  {taskFormValidationErrors && taskFormValidationErrors[field.name as keyof TaskValidationError] && (
+                  {/* {taskFormValidationErrors && taskFormValidationErrors[field.name as keyof TaskValidationError] && (
                     <Typography
                       className="mx-2 my-1 font-normal"
                       color="red">
                       ※{taskFormValidationErrors[field.name as keyof TaskValidationError]}
+                    </Typography>
+                  )} */}
+                  { taskFormValidations[field.name as keyof TaskFormValidation] === false && (
+                    <Typography
+                      className="mx-2 my-1 font-normal"
+                      color="red">
+                      {"※" + taskValidationErrorMessages[field.name as keyof  typeof taskValidationErrorMessages]}
                     </Typography>
                   )}
                 </div>

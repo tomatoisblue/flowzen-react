@@ -89,7 +89,7 @@ const AuthenticationForm: React.FC = () => {
                   <>
                     <div className="flex">
                       <Typography
-                        className="my-1 font-normal"
+                        className="my-1 font-normal w-1/2"
                         color="gray"
                         >
                         {field.labelText}
@@ -103,7 +103,7 @@ const AuthenticationForm: React.FC = () => {
                       )} */}
                       { userLoginFormValidations[field.name as keyof UserLoginFormValidation] === false && (
                         <Typography
-                          className="mx-2 my-1 font-normal"
+                          className="mx-2 my-1 font-normal w-1/2 text-xs"
                           color="red">
                           ※{authValidationErrorMessages[field.name as keyof  typeof authValidationErrorMessages]}
                         </Typography>
@@ -141,21 +141,21 @@ const AuthenticationForm: React.FC = () => {
                 )} */}
                 {otherValidationErrors.somethingBad && (
                   <Typography
-                    className="mx-2 my-1 font-normal"
+                    className="mx-2 my-1 font-normal font-xs"
                     color="red">
                     ※{authValidationErrorMessages["somethingBad"]}
                   </Typography>
                 )}
                 {uniqueFields.username === false && (
                   <Typography
-                    className="mx-2 my-1 font-normal"
+                    className="mx-2 my-1 font-normal font-xs"
                     color="red">
                     ※{authValidationErrorMessages["usernameUnique"]}
                   </Typography>
                 )}
                 {uniqueFields.email === false && (
                   <Typography
-                    className="mx-2 my-1 font-normal"
+                    className="mx-2 my-1 font-normal font-xs"
                     color="red">
                     ※{authValidationErrorMessages["emailUnique"]}
                   </Typography>
@@ -165,7 +165,7 @@ const AuthenticationForm: React.FC = () => {
                   <>
                     <div className="flex">
                       <Typography
-                        className="my-1 font-normal"
+                        className="my-1 font-normal w-1/2"
                         color="gray"
                         >
                         {field.labelText}
@@ -179,7 +179,7 @@ const AuthenticationForm: React.FC = () => {
                       )} */}
                       { userSignupFormValidations[field.name as keyof UserSignupFormValidation] === false && (
                         <Typography
-                          className="mx-2 my-1 font-normal"
+                          className="mx-2 my-1 font-normal w-1/2 text-xs"
                           color="red">
                           ※{authValidationErrorMessages[field.name as keyof  typeof authValidationErrorMessages]}
                         </Typography>

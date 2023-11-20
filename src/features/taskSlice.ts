@@ -14,33 +14,32 @@ export interface TaskFormValidation {
   url: boolean
 }
 
+// export interface TaskValidationError {
+//   title?: string
+//   status?: string
+//   description?: string
+//   expirationDate?: string
+//   url?: string
+// }
+
+
+// initial values
+export const initialTaskFormValidations: TaskFormValidation = {
+  title: true,
+  status: true,
+  description: true,
+  expirationDate: true,
+  url: true
+}
+
+// export const initialTaskFormValidationErrors: TaskValidationError = {
+// }
+
 interface TaskSliceState {
   tasks: Task[]
   currentTaskID: number
   currentTask: Task | null
   taskFormValidations: TaskFormValidation
-  taskFormValidationErrors: TaskValidationError
-}
-
-export interface TaskValidationError {
-  title?: string
-  status?: string
-  description?: string
-  expirationDate?: string
-  url?: string
-}
-
-
-// initial values
-export const initialTaskFormValidations: TaskFormValidation = {
-  title: false,
-  status: false,
-  description: false,
-  expirationDate: false,
-  url: false
-}
-
-export const initialTaskFormValidationErrors: TaskValidationError = {
 }
 
 const initialState: TaskSliceState = {
@@ -48,7 +47,6 @@ const initialState: TaskSliceState = {
   currentTaskID: -1,
   currentTask: null,
   taskFormValidations: initialTaskFormValidations,
-  taskFormValidationErrors: initialTaskFormValidationErrors
 };
 
 export const taskSlice = createSlice({
@@ -75,22 +73,33 @@ export const taskSlice = createSlice({
       state.currentTaskID = -1;
       state.currentTask = null;
     },
-    setTaskFormValidations: (state, action: PayloadAction<TaskFormValidation>) => {
-      state.taskFormValidations = action.payload;
+    // setTaskFormValidations: (state, action: PayloadAction<TaskFormValidation>) => {
+    //   state.taskFormValidations = action.payload;
+    // },
+    setTrueTaskFormValidations: (state, action: PayloadAction<keyof TaskFormValidation>) => {
+      state.taskFormValidations[action.payload] = true
+      console.log(JSON.stringify(state.taskFormValidations));
     },
-    setTaskFormValidationErrors: (state, action: PayloadAction<TaskValidationError>) => {
-      state.taskFormValidationErrors = action.payload;
-      console.log("taskFormValidationErrors changed to")
-      console.log(JSON.stringify(state.taskFormValidationErrors))
+    setFalseTaskFormValidations: (state, action: PayloadAction<keyof TaskFormValidation>) => {
+      state.taskFormValidations[action.payload] = false
+      console.log(JSON.stringify(state.taskFormValidations));
     },
-    unsetTaskFormValidationErrors: (state, action: PayloadAction<keyof TaskValidationError>) => {
-      delete state.taskFormValidationErrors[action.payload];
-      console.log("taskFormValidationErrors changed to")
-      console.log(JSON.stringify(state.taskFormValidationErrors))
-    },
-    clearTaskFormValidationErrors: (state) => {
-      state.taskFormValidationErrors = initialTaskFormValidationErrors;
+    resetTaskFormValidations: (state) => {
+      state.taskFormValidations = initialTaskFormValidations;
     }
+    // setTaskFormValidationErrors: (state, action: PayloadAction<TaskValidationError>) => {
+    //   state.taskFormValidationErrors = action.payload;
+    //   console.log("taskFormValidationErrors changed to")
+    //   console.log(JSON.stringify(state.taskFormValidationErrors))
+    // },
+    // unsetTaskFormValidationErrors: (state, action: PayloadAction<keyof TaskValidationError>) => {
+    //   delete state.taskFormValidationErrors[action.payload];
+    //   console.log("taskFormValidationErrors changed to")
+    //   console.log(JSON.stringify(state.taskFormValidationErrors))
+    // },
+    // clearTaskFormValidationErrors: (state) => {
+    //   state.taskFormValidationErrors = initialTaskFormValidationErrors;
+    // }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllTasksByBoardID.fulfilled, (state, action) => {
@@ -99,15 +108,25 @@ export const taskSlice = createSlice({
   }
 })
 
-export const {  addAllTasks,
-                removeAllTasks,
-                setCurrentTaskID,
-                setCurrentTask,
-                clearCurrentTask,
-                setTaskFormValidations,
-                setTaskFormValidationErrors,
-                unsetTaskFormValidationErrors,
-                clearTaskFormValidationErrors } = taskSlice.actions;
+export const { addAllTasks,
+               removeAllTasks,
+               setCurrentTaskID,
+               setCurrentTask,
+               clearCurrentTask,
+               setTrueTaskFormValidations,
+               setFalseTaskFormValidations,
+               resetTaskFormValidations, } = taskSlice.actions;
+
+
+// export const {  addAllTasks,
+//                 removeAllTasks,
+//                 setCurrentTaskID,
+//                 setCurrentTask,
+//                 clearCurrentTask,
+//                 setTaskFormValidations,
+//                 setTaskFormValidationErrors,
+//                 unsetTaskFormValidationErrors,
+//                 clearTaskFormValidationErrors } = taskSlice.actions;
 
 export default taskSlice.reducer;
 

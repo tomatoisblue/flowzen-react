@@ -1,7 +1,7 @@
 import { Button, Typography } from "@material-tailwind/react";
 import { TaskStatus } from "../types/TaskStatus";
 import { useAppDispatch } from "../hooks";
-import { clearTaskFormValidationErrors, setCurrentTask } from "../features/taskSlice";
+import { resetTaskFormValidations, setCurrentTask } from "../features/taskSlice";
 import Task from "../types/Task";
 
 interface TaskStackHeaderProps {
@@ -31,7 +31,7 @@ const TaskStackHeaderV2: React.FC<TaskStackHeaderProps> = ({ taskStatus, handleO
   }
 
   const handleClick = () => {
-    dispatch(clearTaskFormValidationErrors());
+    dispatch(resetTaskFormValidations());
     const task: Task = {
       title: "",
       status: taskStatus,
@@ -61,3 +61,7 @@ const TaskStackHeaderV2: React.FC<TaskStackHeaderProps> = ({ taskStatus, handleO
 }
 
 export default TaskStackHeaderV2;
+
+function resetTaskFormValidation(): any {
+  throw new Error("Function not implemented.");
+}

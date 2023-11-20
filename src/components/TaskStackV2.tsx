@@ -6,7 +6,7 @@ import ListItem from "@material-tailwind/react/components/List/ListItem";
 import TaskCreateFormV2 from "./TaskCreateFormV2";
 import TaskEditFormV2 from "./TaskEditFormV2";
 import TaskStackHeaderV2 from "./TaskStackHeaderV2";
-import { clearCurrentTask, clearTaskFormValidationErrors, setCurrentTaskID } from "../features/taskSlice";
+import { clearCurrentTask, clearTaskFormValidationErrors, resetTaskFormValidations, setCurrentTaskID } from "../features/taskSlice";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
 
@@ -43,7 +43,8 @@ const TaskStackV2 = ({taskStatus, tasks}: TaskStackProps) => {
 
   const handleClick = (taskID: number) => {
     dispatch(setCurrentTaskID(taskID));
-    dispatch(clearTaskFormValidationErrors)
+    // dispatch(clearTaskFormValidationErrors)
+    dispatch(resetTaskFormValidations())
     handleEditFormOpen();
   }
 

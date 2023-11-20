@@ -1,5 +1,5 @@
 import deleteTask from "../components/deleteTask";
-import { TaskFormValidation, TaskValidationError, clearCurrentTask, clearTaskFormValidationErrors, fetchAllTasksByBoardID, initialTaskFormValidations, setCurrentTask, setCurrentTaskID, setIsTaskFormValid, setTaskFormValidationErrors, toggleTaskCreateFormOpen, toggleTaskEditFormOpen, unsetTaskFormValidationErrors } from "../features/taskSlice";
+import { TaskFormValidation, clearCurrentTask, fetchAllTasksByBoardID, resetTaskFormValidations, setCurrentTask, setFalseTaskFormValidations,  setTrueTaskFormValidations } from "../features/taskSlice";
 import Task from "../types/Task";
 import createTask from "../components/createTask";
 import updateTask from "../components/updateTask";
@@ -7,22 +7,21 @@ import stringToTaskStatus from "../components/stringToTaskStatus";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { taskDescriptionValidation } from "../validation/tasks/taskDescriptionValidation";
 import { taskUrlValidation } from "../validation/tasks/taskUrlValidation";
-import { useEffect } from "react";
 import { taskTitleValidation } from "../validation/tasks/taskTitleValidation";
-import { taskValidationErrorMessages } from "../constants/taskValidationErrorMessages";
+import { taskStatusValidation } from "../validation/tasks/taskStatusValidation";
 
 export const useTaskForm = () => {
   const dispatch = useAppDispatch();
   const currentTaskID: number = useAppSelector((state) => state.task.currentTaskID);
   const currentTask: Task = useAppSelector((state) => state.task.currentTask);
   const currentBoardID: number = useAppSelector((state) => state.board.currentBoardID);
-  const taskValidationErrors: TaskValidationError = useAppSelector((state) => state.task.taskFormValidationErrors)
+  // const taskValidationErrors: TaskFormValidation = useAppSelector((state) => state.task.taskFormValidationErrors)
 
-  useEffect(() => {
-    console.log("taskValidationErrors")
-    console.log(JSON.stringify(taskValidationErrors))
+  // useEffect(() => {
+  //   console.log("taskValidationErrors")
+  //   console.log(JSON.stringify(taskValidationErrors))
 
-  }, [taskValidationErrors])
+  // }, [taskValidationErrors])
 
 
 
@@ -58,8 +57,10 @@ export const useTaskForm = () => {
   }
 
   const handleSubmit: (mode: ("create" | "edit"), handleOpen: () => void) => Promise<void> = async (mode: ("create" | "edit"), handleOpen) => {
+    dispatch(resetTaskFormValidations());
     // validation
     const validationResult = await validate();
+    console.log("validationResult : " + validationResult);
     if (!validationResult) {
       return;
     }
@@ -74,56 +75,42 @@ export const useTaskForm = () => {
     if (submissionResult) {
       console.log("handleSubmit Succeeded")
       dispatch(clearCurrentTask());
-      dispatch(clearTaskFormValidationErrors());
-      dispatch(fetchAllTasksByBoardID(currentBoardID))
+      dispatch(resetTaskFormValidations());
+      dispatch(fetchAllTasksByBoardID(currentBoardID));
       handleOpen();
     }
   }
 
   const validate = async (): Promise<boolean> => {
-    const taskFormValidations: TaskFormValidation = {title: false, status: false, description: false, expirationDate: false, url: false};
+    let tmpResult: boolean = false;
     let flag: boolean = true;
     Object.keys(currentTask).map((key) => {
       switch (key) {
         case "title":
-          taskFormValidations[key] = taskTitleValidation(currentTask[key]);
-          console.log("validate title : " + taskFormValidations[key]);
-          if (taskFormValidations[key]) {
-            dispatch(unsetTaskFormValidationErrors(key));
-          } else {
-            flag = false;
-            dispatch(setTaskFormValidationErrors({...taskValidationErrors, [key]: taskValidationErrorMessages[key as keyof TaskValidationError]}));
-          }
+          tmpResult = taskTitleValidation(currentTask[key]);
           break;
         case "status":
-          taskFormValidations[key] = true;
+          tmpResult = taskStatusValidation(currentTask[key]);
           break;
         case "description":
-          taskFormValidations[key]= taskDescriptionValidation(currentTask[key]!);
-          if (taskFormValidations[key]) {
-            dispatch(unsetTaskFormValidationErrors(key));
-          } else {
-            flag = false;
-            dispatch(setTaskFormValidationErrors({...taskValidationErrors, [key]: taskValidationErrorMessages[key as keyof TaskValidationError]}));
-          }
+          tmpResult = taskDescriptionValidation(currentTask[key]!);
           break;
         case "expirationDate":
-          taskFormValidations[key] = true;
+          tmpResult = true;
           break;
         case "url":
-          taskFormValidations[key] = taskUrlValidation(currentTask[key]!);
-          if (taskFormValidations[key]) {
-            dispatch(unsetTaskFormValidationErrors(key));
-          } else {
-            flag = false;
-            dispatch(setTaskFormValidationErrors({...taskValidationErrors, [key]: taskValidationErrorMessages[key as keyof TaskValidationError]}));
-          }
+          tmpResult = taskUrlValidation(currentTask[key]!);
           break;
         default:
-          console.log("validation keys error")
+          console.log("taskvalidation key error")
       }
-    });
-
+      if (tmpResult) {
+        dispatch(setTrueTaskFormValidations(key as keyof TaskFormValidation));
+      } else {
+        dispatch(setFalseTaskFormValidations(key as keyof TaskFormValidation));
+        flag = false;
+      }
+    })
     return flag;
   }
 

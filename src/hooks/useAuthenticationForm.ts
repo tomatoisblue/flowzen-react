@@ -122,7 +122,7 @@ export const useAuthenticationForm = () => {
           tmpResult = emailValidation(userLoginForm[key]!)
           break;
         case "password":
-          // Password validation is not enabled
+          // Password validation is disabled
           // that's why this always returns true
           tmpResult = true;
           break;
@@ -136,7 +136,6 @@ export const useAuthenticationForm = () => {
         flag = false;
       }
     })
-
     return flag;
 
     // Object.keys(userLoginForm).map((key) => {

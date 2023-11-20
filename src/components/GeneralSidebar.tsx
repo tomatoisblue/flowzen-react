@@ -31,6 +31,7 @@ const GeneralSidebar: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<number>(1);
   const [boardFormOpen, setBoardFormOpen] = useState(false);
   const boards: Board[] = useAppSelector((state) => state.board.boards);
+  const currentBoardID: number = useAppSelector((state) => state.board.currentBoardID);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -103,7 +104,9 @@ const GeneralSidebar: React.FC = () => {
               {
                 boards.length > 0 && boards.map((board: Board) =>
                   <>
-                    <ListItem key={board.boardId} onClick={() => dispatch(setCurrentBoardID(board.boardId))}>
+                    <ListItem key={board.boardId}
+                              onClick={() => dispatch(setCurrentBoardID(board.boardId))}
+                              className={`border-${board.boardId === currentBoardID ? '2' : '0'}`}>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
