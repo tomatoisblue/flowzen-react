@@ -85,6 +85,9 @@ export const useTaskForm = () => {
     let tmpResult: boolean = false;
     let flag: boolean = true;
     Object.keys(currentTask).map((key) => {
+      if (key === "taskId") {
+        return;
+      }
       switch (key) {
         case "title":
           tmpResult = taskTitleValidation(currentTask[key]);
