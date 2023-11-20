@@ -10,7 +10,7 @@ import TaskFormHeader from "./TaskFormHeader";
 import { TaskStatus } from "../types/TaskStatus";
 import { useAppSelector } from "../hooks";
 import Task from "../types/Task";
-import { TaskFormValidation, TaskValidationError } from "../features/taskSlice";
+import { TaskFormValidation } from "../features/taskSlice";
 import { taskValidationErrorMessages } from "../constants/taskValidationErrorMessages";
 
 interface TaskFormProps {

@@ -21,37 +21,33 @@ import { useNavigate } from "react-router-dom";
 import { setLogout } from "../features/authSlice";
 import Board from "../types/Board";
 import getAllBoards from "./getAllBoards";
-import BoardCreationForm from "./BoardCreationForm";
-import { addAllBoards, deleteAllBoards, setCurrentBoardID } from "../features/boardSlice";
+import { addAllBoards, deleteAllBoards, fetchAllBoards, resetCurrentBoard, setCurrentBoard, setCurrentBoardID } from "../features/boardSlice";
 import deleteBoard from "./deleteBoard";
 import { useAppDispatch, useAppSelector } from "../hooks";
+import BoardCreateForm from "./BoardCreateForm";
 
 
 const GeneralSidebar: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<number>(1);
-  const [boardFormOpen, setBoardFormOpen] = useState(false);
+  const [boardCreateFormOpen, setBoardCreateFormOpen] = useState<boolean>(false)
+  const [boardEditFormOpen, setBoardEditFormOpen] = useState<boolean>(false)
   const boards: Board[] = useAppSelector((state) => state.board.boards);
   const currentBoardID: number = useAppSelector((state) => state.board.currentBoardID);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchBoards();
+    dispatch(fetchAllBoards());
   }, [])
 
   useEffect(() => {
     if (boards.length > 0) {
       const firstBoardID = boards[0].boardId;
-      dispatch(setCurrentBoardID(firstBoardID))
+      dispatch(setCurrentBoardID(firstBoardID!))
     }
 
   }, [boards])
 
-
-  const fetchBoards = async () => {
-    const fetchedBoards: Board[] = await getAllBoards();
-    dispatch(addAllBoards(fetchedBoards));
-  }
 
   const handleLogout = () => {
     localStorage.clear();
@@ -60,8 +56,19 @@ const GeneralSidebar: React.FC = () => {
     navigate("/");
   }
 
-  const handleBoardFormOpen = () => {
-    setBoardFormOpen(!boardFormOpen);
+  const handleBoardCreateFormOpen = () => {
+    setBoardCreateFormOpen(!boardCreateFormOpen);
+  }
+
+  const handleBoardEditFormOpen = () => {
+    setBoardEditFormOpen(!boardEditFormOpen);
+  }
+
+  const handleClick = () => {
+    dispatch(resetCurrentBoard());
+    const board: Board = {title: ""};
+    dispatch(setCurrentBoard(board));
+    handleBoardCreateFormOpen();
   }
 
   const handleSidebarOpen = (value: number) => {
@@ -70,15 +77,22 @@ const GeneralSidebar: React.FC = () => {
 
   const handleDeleteBoard = async (boardID: number) => {
     const result = await deleteBoard(boardID);
-    if (result) {
-      dispatch(setCurrentBoardID(-1))
-      fetchBoards()
+    if (!result) { return }
+
+    if (boardID === currentBoardID && boards.length > 1) {
+      const firstBoard = boards.find((board) => board.boardId !== currentBoardID)!;
+      dispatch(setCurrentBoardID(firstBoard.boardId!));
+    } else if (boardID === currentBoardID) {
+      dispatch(resetCurrentBoard());
     }
+
+    await dispatch(fetchAllBoards());
   }
 
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] shadow-xl shadow-blue-gray-900/5">
-      <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/>
+      {/* <BoardCreationForm open={boardFormOpen} handleOpen={handleBoardFormOpen} refresh={fetchBoards}/> */}
+      <BoardCreateForm open={boardCreateFormOpen} handleOpen={handleBoardCreateFormOpen} />
       <List>
         <Accordion
           open={sidebarOpen === 1}
@@ -105,14 +119,14 @@ const GeneralSidebar: React.FC = () => {
                 boards.length > 0 && boards.map((board: Board) =>
                   <>
                     <ListItem key={board.boardId}
-                              onClick={() => dispatch(setCurrentBoardID(board.boardId))}
+                              onClick={() => dispatch(setCurrentBoardID(board.boardId!))}
                               className={`border-${board.boardId === currentBoardID ? '2' : '0'}`}>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
                       {board.title}
                       <ListItemSuffix>
-                        <IconButton variant="text" color="blue-gray" onClick={() => handleDeleteBoard(board.boardId)}>
+                        <IconButton variant="text" color="blue-gray" onClick={() => handleDeleteBoard(board.boardId!)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -134,7 +148,7 @@ const GeneralSidebar: React.FC = () => {
             </List>
           </AccordionBody>
         </Accordion>
-        <ListItem onClick={handleBoardFormOpen}>
+        <ListItem onClick={handleClick}>
           <ListItemPrefix>
             <DocumentPlusIcon className="h-5 w-5" />
           </ListItemPrefix>

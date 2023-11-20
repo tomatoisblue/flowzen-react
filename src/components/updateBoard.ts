@@ -1,36 +1,28 @@
 import axios from "axios";
 import apiConfig from "../constants/apiConfig";
-import Task from "../types/Task";
+import Board from "../types/Board"
 
-const updateTask = async (task: Task, boardID: number, taskID: number): Promise<boolean> => {
+export const updateBoard = async(board: Board): Promise<boolean> => {
   console.log("updateTask()...")
-  console.log("title: " + task.title + "\nstatus: " + task.status)
-  const URL = `${apiConfig.baseUrl}/boards/${boardID}/tasks/${taskID}`;
+  const URL = `${apiConfig.baseUrl}/boards/${board.boardId}`;
 
   const token: string | null = localStorage.getItem("token");
   console.log("token: " + token);
 
-  if (token === null) {
+  if (!token) {
     return false;
   }
 
   try {
     const res = await axios.patch(URL, {
-      taskId: taskID,
-      boardId: boardID,
-      title: task.title,
-      status: task.status,
-      description: task.description,
-      expirationDate: task.expirationDate,
-      url: task.url
+      title: board.title,
+      boardId: board.boardId,
     },{
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       }
     });
-    console.log("res...");
-    console.log(res.data);
 
     if (res.headers["x-auth-token"] != null) {
       localStorage.setItem("token", res.headers["x-auth-token"]);
@@ -41,5 +33,3 @@ const updateTask = async (task: Task, boardID: number, taskID: number): Promise<
     return false;
   }
 }
-
-export default updateTask;

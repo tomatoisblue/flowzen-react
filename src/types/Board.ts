@@ -1,5 +1,5 @@
 export default interface Board {
-  boardId: number
-  title: string
-  updatedOn: string
+  boardId?: number
+  title: string | null
+  updatedOn?: string
 }
